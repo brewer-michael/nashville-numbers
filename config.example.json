@@ -1,0 +1,35 @@
+{
+    "audio": {
+        "sample_rate": 44100,
+        "chunk_size": 4096,
+        "channels": 1,
+        "device_index": null
+    },
+    "detection": {
+        "min_chord_confidence": 0.3,
+        "min_key_confidence": 0.4,
+        "key_detection_history": 8,
+        "chord_smoothing": true,
+        "min_rms_threshold": 0.01
+    },
+    "display": {
+        "type": "lcd",
+        "lcd": {
+            "i2c_address": 39,
+            "rows": 2,
+            "cols": 16
+        },
+        "led": {
+            "display_type": "TM1637",
+            "clk_pin": 23,
+            "dio_pin": 24,
+            "cs_pin": null,
+            "brightness": 7
+        }
+    },
+    "system": {
+        "update_interval": 0.2,
+        "simulation_mode": false,
+        "verbose": false
+    }
+}
