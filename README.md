@@ -35,12 +35,44 @@ The Nashville Number System is a method of transcribing music by denoting the sc
   - TM1637 4-digit seven-segment LED display (red recommended)
   - MAX7219 LED matrix display
 - Power supply (5V, 2.5A minimum)
-- Optional: Breadboard and jumper wires for prototyping
+- Optional: 3D printed enclosure (see [3D Printed Enclosures](#3d-printed-enclosures))
 
 ### Audio Input
 - USB audio interface with microphone/line input
 - OR USB microphone
 - OR Raspberry Pi audio HAT (e.g., HiFiBerry)
+
+## 3D Printed Enclosures
+
+Professional enclosures available for 3D printing! Choose the one that fits your use case:
+
+### Desktop/Practice Room - LCD Case
+<img src="https://via.placeholder.com/300x200?text=LCD+Case" alt="LCD Case" width="300">
+
+- Houses Raspberry Pi + LCD display
+- Professional appearance
+- Full port access
+- [Design Files & Instructions](hardware/enclosures/)
+
+### Stage Performance - LED Display Case
+<img src="https://via.placeholder.com/300x200?text=Stage+LED" alt="Stage LED" width="300">
+
+- Floor-mountable with 30° viewing angle
+- Rugged PETG construction
+- High-visibility LED window
+- [Design Files & Instructions](hardware/enclosures/)
+
+### Compact/Pedalboard - All-in-One Case
+<img src="https://via.placeholder.com/300x200?text=Compact+Case" alt="Compact Case" width="300">
+
+- Vertical design saves space
+- Pi + LED in one unit
+- VESA & pedalboard compatible
+- [Design Files & Instructions](hardware/enclosures/)
+
+**[→ See all enclosure options and printing guide](hardware/enclosures/)**
+
+All designs are parametric OpenSCAD files that can be customized for your specific needs.
 
 ## Quick Start
 
@@ -75,6 +107,8 @@ nashville-numbers/
 │   ├── chord_detection/ # Chord and key detection algorithms
 │   ├── displays/        # Display drivers (LCD, LED)
 │   └── utils/          # Utility functions
+├── hardware/
+│   └── enclosures/     # 3D printable enclosures (OpenSCAD)
 ├── docs/               # Documentation
 ├── examples/           # Example scripts
 └── main.py            # Main application
