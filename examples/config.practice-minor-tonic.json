@@ -1,0 +1,6 @@
+{
+    "audio": {"device": "USB"},
+    "display": {"type": "lcd", "lcd": {"cols": 20, "rows": 4}},
+    "analysis": {"chord_vocabulary": "full"},
+    "key": {"numbering": "minor_tonic", "silence_reset_seconds": 12}
+}

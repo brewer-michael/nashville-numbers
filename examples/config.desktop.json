@@ -1,0 +1,5 @@
+{
+    "audio": {"device": "USB"},
+    "display": {"type": "lcd", "lcd": {"cols": 16, "rows": 2, "address": "0x27"}},
+    "controls": {"footswitch_pin": null}
+}

@@ -1,0 +1,12 @@
+Id	Description	Qty	Unit	Designators
+1	Connector, 16x2 LCD (HD44780), PCF8574 I2C backpack, I2C 0x27 or 0x3F	1		LCD
+2	Connector, BSS138 I2C level shifter, 4-channel, Adafruit 757 or generic	1		LS
+3	Connector, Panel button, 16 mm momentary, normally open, solder lugs or screw terminals	1		BUTTON
+4	Dupont jumper wire F-F 2.54 mm, 20 cm, black	4	pcs	W1, W2, W3
+5	Dupont jumper wire F-F 2.54 mm, 20 cm, blue	2	pcs	W1, W2
+6	Dupont jumper wire F-F 2.54 mm, 20 cm, green	1	pcs	W3
+7	Dupont jumper wire F-F 2.54 mm, 20 cm, orange	1	pcs	W1
+8	Dupont jumper wire F-F 2.54 mm, 20 cm, red	2	pcs	W1, W2
+9	Dupont jumper wire F-F 2.54 mm, 20 cm, yellow	2	pcs	W1, W2
+10	Heat-shrink tube 4.8 mm (3/16 in) 2:1, 15 mm piece (button lugs; not needed for screw terminals)	2	pcs	BUTTON
+11	Solder wire, rosin core, 0.8 mm (button lugs)	0.1	m	BUTTON

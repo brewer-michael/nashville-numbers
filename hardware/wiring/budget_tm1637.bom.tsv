@@ -1,0 +1,18 @@
+Id	Description	Qty	Unit	Designators
+1	Capacitor 100 nF (marked 104), ceramic X7R, 50 V or more, through-hole (radial MLCC or disc) (optional footswitch)	1	pcs	C1
+2	Connector, OPTIONAL: 1/4-inch (6.35 mm) mono TS jack, open frame, solder lugs	1		JACK
+3	Connector, Panel button, 16 mm momentary, normally open, solder lugs or screw terminals	1		BUTTON
+4	Connector, TM1637 4-digit 7-segment module, red, 0.56-inch (or 0.36-inch)	1		TM1637
+5	Dupont jumper wire F-F 2.54 mm, 20 cm, black	2	pcs	W1, W2
+6	Dupont jumper wire F-F 2.54 mm, 20 cm, black (optional footswitch)	1	pcs	W3
+7	Dupont jumper wire F-F 2.54 mm, 20 cm, green	1	pcs	W2
+8	Dupont jumper wire F-F 2.54 mm, 20 cm, grey	1	pcs	W1
+9	Dupont jumper wire F-F 2.54 mm, 20 cm, orange	1	pcs	W1
+10	Dupont jumper wire F-F 2.54 mm, 20 cm, purple	1	pcs	W1
+11	Dupont jumper wire F-F 2.54 mm, 20 cm, white (optional footswitch)	1	pcs	W3
+12	Heat-shrink tube 3.2 mm (1/8 in) 2:1, 20 mm piece (over the R1/C1 splice) (optional footswitch)	1	pcs	SPLICE
+13	Heat-shrink tube 4.8 mm (3/16 in) 2:1, 15 mm piece (button lugs; not needed for screw terminals)	2	pcs	BUTTON
+14	Heat-shrink tube 4.8 mm (3/16 in) 2:1, 15 mm piece (jack lugs) (optional footswitch)	2	pcs	JACK
+15	Resistor 1 kΩ, 0.25 W, 5 % or better, axial (carbon or metal film) (optional footswitch)	1	pcs	R1
+16	Solder wire, rosin core, 0.8 mm (button lugs)	0.1	m	BUTTON
+17	Solder wire, rosin core, 0.8 mm (jack and splice) (optional footswitch)	0.1	m	JACK, SPLICE

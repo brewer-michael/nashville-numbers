@@ -1,0 +1,16 @@
+Id	Description	Qty	Unit	Designators
+1	Capacitor 100 nF (marked 104), ceramic X7R, 50 V or more, through-hole (radial MLCC or disc)	1	pcs	C1
+2	Connector, 1/4-inch (6.35 mm) mono TS jack, open frame, solder lugs	1		JACK
+3	Connector, Adafruit 1.2-inch 4-digit 7-segment, HT16K33 I2C backpack, red, Adafruit 1270; I2C 0x70	1		HT16K33
+4	Connector, Panel button, 16 mm momentary, normally open, solder lugs or screw terminals	1		BUTTON
+5	Dupont jumper wire F-F 2.54 mm, 20 cm, black	3	pcs	W1, W2, W3
+6	Dupont jumper wire F-F 2.54 mm, 20 cm, blue	1	pcs	W1
+7	Dupont jumper wire F-F 2.54 mm, 20 cm, green	1	pcs	W2
+8	Dupont jumper wire F-F 2.54 mm, 20 cm, orange	1	pcs	W1
+9	Dupont jumper wire F-F 2.54 mm, 20 cm, red	1	pcs	W1
+10	Dupont jumper wire F-F 2.54 mm, 20 cm, white	1	pcs	W3
+11	Dupont jumper wire F-F 2.54 mm, 20 cm, yellow	1	pcs	W1
+12	Heat-shrink tube 3.2 mm (1/8 in) 2:1, 20 mm piece (over the R1/C1 splice)	1	pcs	SPLICE
+13	Heat-shrink tube 4.8 mm (3/16 in) 2:1, 15 mm piece (button and jack lugs)	4	pcs	BUTTON, JACK
+14	Resistor 1 kΩ, 0.25 W, 5 % or better, axial (carbon or metal film)	1	pcs	R1
+15	Solder wire, rosin core, 0.8 mm (button, jack, splice)	0.2	m	BUTTON, JACK, SPLICE

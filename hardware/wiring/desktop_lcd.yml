@@ -1,0 +1,143 @@
+# Nashville Numbers v2 - Desktop build: 16x2 LCD (PCF8574 backpack) via BSS138 level shifter
+#
+# WireViz 0.4.1 harness.  Source of truth: hardware/SPEC.md sections 3.1, 3.2, 3.5.
+# Rendered and checked by tools/build.sh (tools/check_wiring.py compares every
+# wire below with tools/wiring_data.py).  Pin numbers are physical header pins,
+# GPIO numbers are BCM.  Wire colours: see README.md "Wire colour scheme".
+
+metadata:
+  title: Nashville Numbers v2 - Desktop build (16x2 LCD)
+
+options:
+  color_mode: full
+
+tweak:
+  append:
+    - 'graph [ranksep="1.0"]'
+    - 'labelloc="t"'
+    - 'labeljust="l"'
+    - 'fontsize="22"'
+    - 'label=<<b>Desktop build: 16x2 LCD (PCF8574 I2C backpack) via BSS138 level shifter</b><br align="left"/><font point-size="13">Raspberry Pi 5 / Pi 4. Physical header pin numbers, BCM GPIO names. Power off before wiring. Source: hardware/SPEC.md §3.1, §3.2, §3.5</font><br align="left"/><font point-size="13">Wire colours: red 5 V · orange 3.3 V · black GND · blue I2C SDA · yellow I2C SCL · green panel button (GPIO17)</font><br align="left"/>>'
+
+connectors:
+  PI:
+    type: Raspberry Pi 5 / Pi 4, 40-pin GPIO header
+    subtype: 2x20 male, 2.54 mm
+    pincount: 40
+    pinlabels: [3V3, 5V, GPIO2 SDA, 5V, GPIO3 SCL, GND, GPIO4, GPIO14 TXD, GND, GPIO15 RXD,
+                GPIO17, GPIO18, GPIO27, GND, GPIO22, GPIO23, 3V3, GPIO24, GPIO10 MOSI, GND,
+                GPIO9 MISO, GPIO25, GPIO11 SCLK, GPIO8 CE0, GND, GPIO7 CE1, GPIO0 ID_SD, GPIO1 ID_SC, GPIO5, GND,
+                GPIO6, GPIO12, GPIO13, GND, GPIO19, GPIO16, GPIO26, GPIO20, GND, GPIO21]
+    hide_disconnected_pins: true
+    ignore_in_bom: true
+    notes: |-
+      Pin 1 = square pad, microSD-card end.
+      Only the pins used by this build are shown.
+  LS:
+    type: BSS138 I2C level shifter, 4-channel
+    subtype: Adafruit 757 or generic
+    pins: [LV1, LV2, LV, GND (LV), LV3, LV4, HV1, HV2, HV, GND (HV), HV3, HV4]
+    pinlabels: [SDA 3.3 V, SCL 3.3 V, 3.3 V supply, GND, unused, unused,
+                SDA 5 V, SCL 5 V, 5 V supply, GND, unused, unused]
+    hide_disconnected_pins: true
+    show_pincount: false
+    notes: |-
+      LV side = 3.3 V (Pi), HV side = 5 V (LCD). Never swap.
+      Adafruit 757 marks LV1/LV2 as A1/A2 and HV1/HV2 as B1/B2.
+      Channels 3 and 4 stay unconnected.
+  LCD:
+    type: 16x2 LCD (HD44780), PCF8574 I2C backpack
+    subtype: I2C 0x27 or 0x3F
+    pinlabels: [GND, VCC, SDA, SCL]
+    show_pincount: false
+    notes: |-
+      0x27 = PCF8574T, 0x3F = PCF8574AT.
+      Wire by the labels printed on the backpack.
+      Backlight on but no text: turn the contrast trimmer.
+  BUTTON:
+    type: Panel button, 16 mm momentary, normally open
+    subtype: solder lugs or screw terminals
+    pins: [C, 'NO']
+    pinlabels: [common, normally open]
+    show_pincount: false
+    notes: 2-lug switch - either way round. 3-lug switch - use C and NO, leave NC free.
+
+cables:
+  W1:
+    category: bundle
+    type: Dupont jumper F-F
+    gauge: 26 AWG
+    length: 0.2
+    colors: [BU, YE, OG, BK, RD, BK]
+    ignore_in_bom: true
+    notes: Pi to level shifter
+  W2:
+    category: bundle
+    type: Dupont jumper F-F
+    gauge: 26 AWG
+    length: 0.2
+    colors: [BK, RD, BU, YE]
+    ignore_in_bom: true
+    notes: to the LCD backpack (2 from the Pi, 2 from the level shifter)
+  W3:
+    category: bundle
+    type: Dupont jumper F-F, far housing cut off
+    gauge: 26 AWG
+    length: 0.2
+    colors: [BK, GN]
+    ignore_in_bom: true
+    notes: |-
+      Female housing on the Pi. Button end: strip 5 mm,
+      solder to the lug under 4.8 mm heat-shrink, or clamp in the screw terminal.
+
+connections:
+  -
+    - PI: [3, 5, 1, 25, 4, 30]
+    - W1: [1-6]
+    - LS: [LV1, LV2, LV, GND (LV), HV, GND (HV)]
+  -
+    - PI: [6, 2]
+    - W2: [1-2]
+    - LCD: [GND, VCC]
+  -
+    - LS: [HV1, HV2]
+    - W2: [3-4]
+    - LCD: [SDA, SCL]
+  -
+    - PI: [9, 11]
+    - W3: [1-2]
+    - BUTTON: [C, 'NO']
+
+additional_bom_items:
+  - description: Dupont jumper wire F-F 2.54 mm, 20 cm, black
+    qty: 4
+    unit: pcs
+    designators: [W1, W2, W3]
+  - description: Dupont jumper wire F-F 2.54 mm, 20 cm, blue
+    qty: 2
+    unit: pcs
+    designators: [W1, W2]
+  - description: Dupont jumper wire F-F 2.54 mm, 20 cm, green
+    qty: 1
+    unit: pcs
+    designators: [W3]
+  - description: Dupont jumper wire F-F 2.54 mm, 20 cm, orange
+    qty: 1
+    unit: pcs
+    designators: [W1]
+  - description: Dupont jumper wire F-F 2.54 mm, 20 cm, red
+    qty: 2
+    unit: pcs
+    designators: [W1, W2]
+  - description: Dupont jumper wire F-F 2.54 mm, 20 cm, yellow
+    qty: 2
+    unit: pcs
+    designators: [W1, W2]
+  - description: Heat-shrink tube 4.8 mm (3/16 in) 2:1, 15 mm piece (button lugs; not needed for screw terminals)
+    qty: 2
+    unit: pcs
+    designators: [BUTTON]
+  - description: Solder wire, rosin core, 0.8 mm (button lugs)
+    qty: 0.1
+    unit: m
+    designators: [BUTTON]

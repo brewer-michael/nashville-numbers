@@ -1,542 +1,160 @@
-# Installation Guide
+# Installation
 
-Complete software installation and configuration guide for the Nashville Numbers system.
+This guide covers installing Nashville Numbers on a Raspberry Pi and trying
+it on any computer first. For parts and wiring see
+[`hardware/`](../hardware/README.md).
 
-## Table of Contents
+## Try it without any hardware
 
-1. [System Requirements](#system-requirements)
-2. [Raspberry Pi OS Setup](#raspberry-pi-os-setup)
-3. [Software Installation](#software-installation)
-4. [Configuration](#configuration)
-5. [Testing](#testing)
-6. [Auto-Start Setup](#auto-start-setup)
-7. [Troubleshooting](#troubleshooting)
-
-## System Requirements
-
-### Hardware
-- Raspberry Pi 3B+ or newer (Pi 4 recommended)
-- 16GB+ microSD card
-- USB audio interface or microphone
-- LCD or LED display (see [Hardware Setup](HARDWARE_SETUP.md))
-- Internet connection (for initial setup)
-
-### Software
-- Raspberry Pi OS (Buster or newer)
-- Python 3.7 or newer
-- Git
-
-## Raspberry Pi OS Setup
-
-### 1. Install Operating System
-
-**Option A: Desktop Version**
-```bash
-# Download from https://www.raspberrypi.com/software/
-# Use Raspberry Pi Imager to write to SD card
-# Choose: "Raspberry Pi OS (32-bit)" with desktop
-```
-
-**Option B: Lite Version (Recommended for dedicated systems)**
-```bash
-# Choose: "Raspberry Pi OS Lite (32-bit)"
-# Smaller footprint, better performance
-# No desktop environment needed
-```
-
-### 2. Initial Configuration
+Any Linux, macOS or Windows machine with Python 3.9+:
 
 ```bash
-# On first boot, run configuration
-sudo raspi-config
-```
-
-Configure the following:
-1. **System Options** → Hostname (e.g., "nashville-pi")
-2. **Interface Options** → I2C → Enable (for LCD)
-3. **Interface Options** → SPI → Enable (for MAX7219)
-4. **Localisation Options** → Set timezone
-5. **Performance Options** → GPU Memory → 16 MB (minimal)
-
-Reboot:
-```bash
-sudo reboot
-```
-
-### 3. Update System
-
-```bash
-sudo apt update
-sudo apt upgrade -y
-```
-
-## Software Installation
-
-### 1. Install System Dependencies
-
-```bash
-# Audio libraries
-sudo apt install -y portaudio19-dev python3-pyaudio libasound2-dev
-
-# I2C and GPIO tools
-sudo apt install -y i2c-tools python3-smbus python3-rpi.gpio
-
-# Python development tools
-sudo apt install -y python3-pip python3-dev python3-numpy python3-scipy
-
-# Git (if not already installed)
-sudo apt install -y git
-
-# Optional: For advanced audio analysis
-# sudo apt install -y libsndfile1-dev
-```
-
-### 2. Clone Nashville Numbers Repository
-
-```bash
-# Navigate to home directory
-cd ~
-
-# Clone repository
-git clone https://github.com/your-username/nashville-numbers.git
+git clone https://github.com/brewer-michael/nashville-numbers.git
 cd nashville-numbers
+pip install .
+nashville-numbers --simulate --demo                      # synthesised "1 5 6m 4" in G
+nashville-numbers --simulate --demo "2m7 57 1maj7" --demo-key Bb
 ```
 
-*Or if you have the code on a USB drive:*
-```bash
-cp -r /media/usb/nashville-numbers ~/
-cd ~/nashville-numbers
-```
-
-### 3. Install Python Dependencies
-
-```bash
-# Upgrade pip
-pip3 install --upgrade pip
-
-# Install requirements
-pip3 install -r requirements.txt
-```
-
-**Note**: Installation may take 10-20 minutes, especially for NumPy and SciPy on Raspberry Pi 3.
-
-### 4. Verify Installation
+`--simulate` prints to the terminal instead of driving display hardware;
+`--demo` synthesises a looping chord progression instead of listening. To
+listen to your computer's microphone or audio interface instead, install the
+audio extra and drop `--demo`:
 
 ```bash
-# Check Python version
-python3 --version
-# Should be 3.7 or newer
-
-# Verify key libraries
-python3 -c "import pyaudio; import numpy; import scipy; print('All imports successful')"
+pip install ".[audio]"           # sounddevice; Linux also needs libportaudio2
+nashville-numbers --list-devices
+nashville-numbers --simulate --device "USB"
 ```
 
-## Configuration
-
-### 1. Create Configuration File
+To analyse a recording (16/24/32-bit WAV):
 
 ```bash
-# Create from example
-cp config.example.json config.json
+nashville-numbers --analyze song.wav
 ```
 
-### 2. Configure Audio Device
+## Raspberry Pi
 
-**Find your audio device:**
-```bash
-# List audio devices
-python3 main.py --list-devices
-```
+### 1. Operating system
 
-Output example:
-```
-Available audio input devices:
-------------------------------------------------------------
- 0: bcm2835 Headphones (48000 Hz)
- 1: USB Audio Device (44100 Hz)
- 2: Blue Snowball (48000 Hz)
-------------------------------------------------------------
-```
+Use **Raspberry Pi OS Lite (64-bit)**, Bookworm or Trixie. Lite has no
+desktop audio server (PipeWire) competing for the audio interface, boots
+faster and leaves more memory free. In Raspberry Pi Imager, set a hostname,
+your user name and password, Wi-Fi if needed, and enable SSH.
 
-**Edit config.json:**
-```json
-{
-    "audio": {
-        "sample_rate": 44100,
-        "chunk_size": 4096,
-        "channels": 1,
-        "device_index": 1  // Use your USB device index
-    }
-}
-```
+Supported boards: Pi 5 and Pi 4 (1 GB is plenty), Pi 3B+. On a Pi 5
+use the official 27 W power supply: with a 3 A supply the Pi 5 limits all USB
+ports to 600 mA total, which a USB audio interface shares.
 
-### 3. Configure Display
+### 2. Install
 
-**For LCD Display:**
-
-Find I2C address:
-```bash
-sudo i2cdetect -y 1
-```
-
-Edit `config.json`:
-```json
-{
-    "display": {
-        "type": "lcd",
-        "lcd": {
-            "i2c_address": 39,  // 0x27 in decimal
-            "rows": 2,
-            "cols": 16
-        }
-    }
-}
-```
-
-**For TM1637 LED Display:**
-
-```json
-{
-    "display": {
-        "type": "led",
-        "led": {
-            "display_type": "TM1637",
-            "clk_pin": 23,
-            "dio_pin": 24,
-            "brightness": 7
-        }
-    }
-}
-```
-
-**For MAX7219 LED Display:**
-
-```json
-{
-    "display": {
-        "type": "led",
-        "led": {
-            "display_type": "MAX7219",
-            "brightness": 10
-        }
-    }
-}
-```
-
-### 4. Adjust Detection Settings
-
-Edit `config.json` for optimal detection:
-
-```json
-{
-    "detection": {
-        "min_chord_confidence": 0.3,     // Lower = more sensitive
-        "min_key_confidence": 0.4,
-        "key_detection_history": 8,       // More history = more stable
-        "chord_smoothing": true,          // Reduce jitter
-        "min_rms_threshold": 0.01        // Minimum volume
-    }
-}
-```
-
-## Testing
-
-### 1. Test Audio Input
+Wire and plug in your display and audio interface first (see
+[`hardware/wiring/`](../hardware/wiring/README.md)), then:
 
 ```bash
-# Test audio levels (10 seconds)
-python3 main.py --test-audio
-
-# Should show visual meter:
-# RMS Level | ##########
+sudo apt install -y git
+git clone https://github.com/brewer-michael/nashville-numbers.git
+cd nashville-numbers
+./deploy/install.sh --build desktop      # or: stage | budget | console
+sudo reboot                              # once, so I2C/SPI and groups take effect
 ```
 
-Play your instrument and verify the meter responds.
+`install.sh`:
 
-### 2. Test Display (Simulation Mode)
+* installs the system packages (NumPy, gpiozero + lgpio, smbus2, spidev,
+  PortAudio, i2c-tools);
+* enables I2C and SPI and adds you to the `audio`, `gpio`, `i2c`, `spi` groups;
+* creates a virtualenv in `.venv` and installs the package with its audio and
+  Raspberry Pi extras;
+* writes `~/.config/nashville-numbers/config.json` from
+  `examples/config.<build>.json` (an existing file is never overwritten);
+* installs and starts the `nashville-numbers` systemd service, and a sudo rule
+  that only allows `systemctl poweroff`, so the panel button can shut the Pi
+  down cleanly.
 
-```bash
-# Test without hardware
-python3 main.py --simulate --display lcd
+Use `--no-service` if you only want to run it by hand.
 
-# Or for LED:
-python3 main.py --simulate --display led
-```
-
-Verify the simulation output appears correctly.
-
-### 3. Test Complete System
-
-```bash
-# Run with your configured display
-python3 main.py
-
-# Or with command-line override:
-python3 main.py --display lcd
-```
-
-**Test procedure:**
-1. Play a clear chord (e.g., C major)
-2. Wait 2-3 seconds for key detection
-3. Verify display shows correct chord and Nashville number
-4. Try different chords in the same key
-5. Press Ctrl+C to stop
-
-### 4. Troubleshooting Tests
-
-**Audio not detected:**
-```bash
-# Test system audio recording
-arecord -D plughw:1,0 -d 5 -f cd test.wav
-aplay test.wav
-
-# Adjust input gain
-alsamixer
-# Press F6, select USB device, adjust capture level
-```
-
-**Display not working:**
-```bash
-# For LCD:
-sudo i2cdetect -y 1  # Should show device at 0x27 or 0x3F
-
-# For TM1637/MAX7219:
-# Check wiring and run in simulation mode first
-```
-
-## Auto-Start Setup
-
-### Option 1: Systemd Service (Recommended)
-
-Create service file:
-```bash
-sudo nano /etc/systemd/system/nashville-numbers.service
-```
-
-Add content:
-```ini
-[Unit]
-Description=Nashville Numbers Chord Detection
-After=network.target sound.target
-
-[Service]
-Type=simple
-User=pi
-WorkingDirectory=/home/pi/nashville-numbers
-ExecStart=/usr/bin/python3 /home/pi/nashville-numbers/main.py
-Restart=on-failure
-RestartSec=5
-StandardOutput=journal
-StandardError=journal
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Enable and start:
-```bash
-# Reload systemd
-sudo systemctl daemon-reload
-
-# Enable auto-start
-sudo systemctl enable nashville-numbers.service
-
-# Start service
-sudo systemctl start nashville-numbers.service
-
-# Check status
-sudo systemctl status nashville-numbers.service
-```
-
-View logs:
-```bash
-# Real-time logs
-sudo journalctl -u nashville-numbers.service -f
-
-# Recent logs
-sudo journalctl -u nashville-numbers.service -n 50
-```
-
-Stop service:
-```bash
-sudo systemctl stop nashville-numbers.service
-```
-
-### Option 2: Cron at Reboot
-
-Edit crontab:
-```bash
-crontab -e
-```
-
-Add line:
-```
-@reboot sleep 30 && cd /home/pi/nashville-numbers && /usr/bin/python3 main.py >> /home/pi/nashville.log 2>&1
-```
-
-### Option 3: Desktop Auto-Start
-
-For Raspberry Pi OS with desktop:
-
-```bash
-# Create autostart directory
-mkdir -p ~/.config/autostart
-
-# Create desktop entry
-nano ~/.config/autostart/nashville-numbers.desktop
-```
-
-Add content:
-```ini
-[Desktop Entry]
-Type=Application
-Name=Nashville Numbers
-Exec=/usr/bin/python3 /home/pi/nashville-numbers/main.py
-Terminal=true
-```
-
-## Advanced Configuration
-
-### Performance Tuning
-
-For better performance on Raspberry Pi 3:
-
-```json
-{
-    "audio": {
-        "chunk_size": 2048  // Smaller chunks = lower latency
-    },
-    "system": {
-        "update_interval": 0.3  // Slower updates = lower CPU
-    }
-}
-```
-
-For Raspberry Pi 4:
-```json
-{
-    "audio": {
-        "chunk_size": 4096  // Better accuracy
-    },
-    "system": {
-        "update_interval": 0.1  // Faster response
-    }
-}
-```
-
-### Disable Unnecessary Services
-
-For dedicated Nashville Numbers system:
-```bash
-# Disable Bluetooth (if not needed)
-sudo systemctl disable bluetooth
-
-# Disable WiFi (if using Ethernet)
-sudo systemctl disable wpa_supplicant
-
-# Reduce GPU memory (already in raspi-config)
-# Edit /boot/config.txt: gpu_mem=16
-```
-
-### Enable Real-Time Priority (Advanced)
-
-For lowest possible latency:
-
-```bash
-# Edit limits
-sudo nano /etc/security/limits.conf
-```
-
-Add:
-```
-@audio - rtprio 99
-@audio - memlock unlimited
-pi - rtprio 99
-pi - memlock unlimited
-```
-
-Add user to audio group:
-```bash
-sudo usermod -a -G audio pi
-```
-
-Reboot:
-```bash
-sudo reboot
-```
-
-## Backup and Updates
-
-### Backup Configuration
-
-```bash
-# Backup your config
-cp config.json config.json.backup
-
-# Or entire installation
-cd ~
-tar -czf nashville-backup.tar.gz nashville-numbers/
-```
-
-### Update Software
+### 3. Check each part
 
 ```bash
 cd ~/nashville-numbers
+.venv/bin/nashville-numbers --list-devices     # is the audio interface there?
+.venv/bin/nashville-numbers --test-audio       # level meter, detected chord, tuning
+.venv/bin/nashville-numbers --test-display     # cycles example numbers on the display
+sudo i2cdetect -y 1                            # LCD: 27 or 3f, HT16K33: 70
+```
 
-# Pull latest changes
+`--test-audio` shows the input level in dBFS. Set the interface's gain so
+that strumming peaks around −20 to −10 dBFS and silence stays below the gate
+(−50 dBFS by default). The meter shows `ON` while the gate is open.
+
+Stop the service first if it is using the display or audio interface:
+`sudo systemctl stop nashville-numbers`.
+
+### 4. The service
+
+```bash
+sudo systemctl status nashville-numbers
+journalctl -u nashville-numbers -f        # live log: key changes, errors
+sudo systemctl restart nashville-numbers  # after editing the config
+sudo systemctl disable --now nashville-numbers
+```
+
+The service waits for the audio interface if it isn't plugged in yet, and
+reopens it if it is unplugged and plugged back in. If the display stops
+responding it logs the error, keeps analysing, and retries every 5 seconds.
+
+### 5. Configuration
+
+`~/.config/nashville-numbers/config.json` only needs the settings you change;
+everything else uses the defaults. `nashville-numbers --write-config
+full.json` writes every setting with its current value. See the
+[User Guide](USER_GUIDE.md#settings) for what each one does, and
+`examples/` for ready-made configs. Version 1 config files still load (they
+are converted automatically, with a warning).
+
+### 6. Make it gig-proof (optional, recommended for stage use)
+
+Pulling the power from a Raspberry Pi can corrupt its SD card. For a device
+that gets unplugged at the end of every gig, make the SD card read-only once
+everything works:
+
+```bash
+sudo raspi-config        # Performance Options -> Overlay File System -> enable, reboot
+```
+
+Changes to files are then lost at reboot. To change the config later,
+disable the overlay again in `raspi-config`, edit, and re-enable it.
+Alternatively, hold the panel button for 6 seconds before unplugging: the
+display shows `OFF` and the Pi shuts down cleanly.
+
+### Updating
+
+```bash
+cd ~/nashville-numbers
 git pull
-
-# Update dependencies
-pip3 install -r requirements.txt --upgrade
-
-# Restart service if running
-sudo systemctl restart nashville-numbers.service
+.venv/bin/pip install ".[audio,pi]"
+sudo systemctl restart nashville-numbers
 ```
 
-## Uninstallation
+### Uninstalling
 
 ```bash
-# Stop and disable service
-sudo systemctl stop nashville-numbers.service
-sudo systemctl disable nashville-numbers.service
-sudo rm /etc/systemd/system/nashville-numbers.service
-
-# Remove software
-rm -rf ~/nashville-numbers
-
-# Remove Python packages (optional)
-pip3 uninstall -y -r requirements.txt
+sudo systemctl disable --now nashville-numbers
+sudo rm /etc/systemd/system/nashville-numbers.service /etc/sudoers.d/nashville-numbers
+rm -rf ~/nashville-numbers ~/.config/nashville-numbers
 ```
 
 ## Troubleshooting
 
-### Common Issues
-
-**"No module named 'nashville_numbers'"**
-- Run from project root: `cd ~/nashville-numbers`
-- Or set PYTHONPATH: `export PYTHONPATH=$PYTHONPATH:~/nashville-numbers/src`
-
-**"Permission denied" on GPIO**
-- Add user to gpio group: `sudo usermod -a -G gpio pi`
-- Reboot
-
-**High CPU usage**
-- Increase `update_interval` in config
-- Reduce `chunk_size` for lower latency but higher CPU
-
-**Inconsistent detection**
-- Increase input gain
-- Adjust `min_chord_confidence` (lower = more detections)
-- Enable `chord_smoothing`
-
-### Getting Help
-
-1. Check logs: `sudo journalctl -u nashville-numbers.service`
-2. Run in verbose mode: `python3 main.py --verbose`
-3. Test in simulation: `python3 main.py --simulate`
-
-## Next Steps
-
-- [User Guide](USER_GUIDE.md) - Learn how to use the system
-- [Hardware Setup](HARDWARE_SETUP.md) - Hardware details and troubleshooting
-- [Wiring Reference](WIRING_REFERENCE.md) - Quick wiring diagrams
+| Symptom | Check |
+|---|---|
+| `No audio input` on the display | `--list-devices`; set `audio.device` to part of the device's name; USB cable; on a Pi 5, the 27 W supply |
+| Display blank, log says `No LCD at I2C address` | `sudo i2cdetect -y 1`; set `display.lcd.address` to what it shows; check the level shifter wiring |
+| `TM1637 ... did not acknowledge` | CLK/DIO swapped or loose; module VCC must be on 3.3 V (pin 17) |
+| LCD backlight on but no text | turn the blue contrast trimmer on the backpack |
+| LCD shows wrong symbols for ° | set `display.lcd.charmap` to `A02` (some modules use the European ROM) |
+| Chords flicker | raise `analysis.chord_hold_seconds` (e.g. 0.8); use a direct line/DI signal rather than a room mic |
+| Key takes long to appear | normal for the first 4 chords; lower `key.min_events` to 3 for faster (less certain) keys |
+| Nothing happens when playing | `--test-audio`: if the meter stays below the gate, raise the interface gain or lower `analysis.gate_open_dbfs` |
+| `externally-managed-environment` from pip | use the virtualenv (`deploy/install.sh` does this); don't `sudo pip install` on Bookworm/Trixie |

@@ -1,35 +1,67 @@
 {
     "audio": {
-        "sample_rate": 44100,
-        "chunk_size": 4096,
-        "channels": 1,
-        "device_index": null
+        "device": null,
+        "sample_rate": null,
+        "channels": null,
+        "channel": null,
+        "block_size": 1024,
+        "backend": "auto"
     },
-    "detection": {
-        "min_chord_confidence": 0.3,
-        "min_key_confidence": 0.4,
-        "key_detection_history": 8,
-        "chord_smoothing": true,
-        "min_rms_threshold": 0.01
+    "analysis": {
+        "window_seconds": 0.35,
+        "hop_seconds": 0.1,
+        "gate_open_dbfs": -50.0,
+        "gate_close_dbfs": -56.0,
+        "auto_tuning": true,
+        "tuning_cents": 0.0,
+        "chord_vocabulary": "sevenths",
+        "chord_hold_seconds": 0.5,
+        "no_chord_score": 0.62
+    },
+    "key": {
+        "numbering": "relative_major",
+        "window_seconds": 60.0,
+        "switch_seconds": 6.0,
+        "min_events": 4,
+        "silence_reset_seconds": 0.0
     },
     "display": {
-        "type": "lcd",
+        "type": "console",
         "lcd": {
-            "i2c_address": 39,
+            "cols": 16,
             "rows": 2,
-            "cols": 16
+            "address": "0x27",
+            "expander": "PCF8574",
+            "port": 1,
+            "charmap": "A00"
         },
-        "led": {
-            "display_type": "TM1637",
+        "ht16k33": {
+            "address": "0x70",
+            "bus": 1,
+            "brightness": 15
+        },
+        "tm1637": {
             "clk_pin": 23,
             "dio_pin": 24,
-            "cs_pin": null,
             "brightness": 7
+        },
+        "max7219": {
+            "port": 0,
+            "device": 0,
+            "digits": 8,
+            "brightness": 8,
+            "reverse": true
         }
     },
-    "system": {
-        "update_interval": 0.2,
-        "simulation_mode": false,
-        "verbose": false
+    "controls": {
+        "enabled": true,
+        "button_pin": 17,
+        "footswitch_pin": 27,
+        "hold_seconds": 1.5,
+        "shutdown_seconds": 6.0,
+        "allow_shutdown": true
+    },
+    "logging": {
+        "level": "INFO"
     }
 }

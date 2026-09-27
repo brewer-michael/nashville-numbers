@@ -1,0 +1,16 @@
+Id	Description	Qty	Unit	Designators
+1	Breadboard link wire, 22 AWG solid core, black	6	pcs	L1
+2	Breadboard, half size (400 tie points), with power rails	1	pcs	RAIL, U1
+3	Capacitor 100 nF (marked 104), ceramic X7R, 50 V or more, through-hole (radial MLCC or disc)	1	pcs	C2
+4	Connector, MAX7219 8-digit 7-segment module, input header	1		MAX7219
+5	Connector, Panel button, 16 mm momentary, normally open, solder lugs or screw terminals	1		BUTTON
+6	Dupont jumper wire F-F 2.54 mm, 20 cm, black	1	pcs	W3
+7	Dupont jumper wire F-F 2.54 mm, 20 cm, green	1	pcs	W3
+8	Dupont jumper wire M-F 2.54 mm, 20 cm, black	2	pcs	W1, W2
+9	Dupont jumper wire M-F 2.54 mm, 20 cm, brown	2	pcs	W1, W2
+10	Dupont jumper wire M-F 2.54 mm, 20 cm, grey	2	pcs	W1, W2
+11	Dupont jumper wire M-F 2.54 mm, 20 cm, purple	2	pcs	W1, W2
+12	Dupont jumper wire M-F 2.54 mm, 20 cm, red	2	pcs	W1, W2
+13	Heat-shrink tube 4.8 mm (3/16 in) 2:1, 15 mm piece (button lugs; not needed for screw terminals)	2	pcs	BUTTON
+14	IC 74AHCT125 quad bus buffer, 3-state, DIP-14 (e.g. TI SN74AHCT125N)	1	pcs	U1
+15	Solder wire, rosin core, 0.8 mm (button lugs)	0.1	m	BUTTON

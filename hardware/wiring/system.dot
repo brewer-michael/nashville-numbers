@@ -1,0 +1,73 @@
+// Nashville Numbers v2 - system block diagram (Graphviz).
+// Source of truth: hardware/SPEC.md sections 1, 2, 3 (3.5 controls, 3.6 power) and 4.
+// Rendered by tools/build.sh to system_block_diagram.svg / .png:
+//   dot -Tsvg system.dot -o system_block_diagram.svg
+//   dot -Tpng -Gdpi=150 system.dot -o system_block_diagram.png
+
+digraph nashville_numbers_system {
+  graph [rankdir=LR, newrank=true, nodesep=0.3, ranksep=0.75, pad=0.3,
+         fontname="Arial", fontsize=20, labelloc=t, labeljust=l,
+         label=<<b>Nashville Numbers v2: system overview</b><br align="left"/><font point-size="12">Audio in over USB, chord and key detection on the Pi, Nashville number out on one display. Source: hardware/SPEC.md §1, §2, §3.5, §3.6, §4</font><br align="left"/>>];
+  node  [shape=box, style="rounded,filled", fillcolor="#f8f9fa", color="#495057",
+         fontname="Arial", fontsize=12, margin="0.18,0.10"];
+  edge  [fontname="Arial", fontsize=10, color="#495057", penwidth=1.5, arrowsize=0.8];
+
+  // ---------------------------------------------------------------- sources
+  subgraph cluster_sources {
+    label=<<b>Audio source</b> (pick one)>; fontsize=13; style="rounded,dashed"; color="#adb5bd";
+    src_line [label=<<b>Mixer aux send, keyboard</b><br/><b>or pedalboard output</b><br/><font point-size="10">line level</font>>];
+    src_inst [label=<<b>Electric guitar or bass</b><br/><font point-size="10">plugged in directly (Hi-Z)</font>>];
+    src_mic  [label=<<b>Acoustic instrument</b><br/><b>or the whole band</b><br/><font point-size="10">dynamic mic, or a USB mic</font>>];
+  }
+
+  usb_if [label=<<b>USB audio interface</b><br/>class compliant, no drivers<br/><font point-size="10">line in: Behringer UCA202 / UCA222<br/>Hi-Z in: Behringer UM2, UMC22, UCG102<br/>mic: UM2 + dynamic mic (or any USB mic)</font>>,
+          fillcolor="#e7f5ff", color="#1971c2"];
+
+  // ------------------------------------------------------------------ power
+  psu [label=<<b>USB-C power supply</b><br/>Pi 5: official 27 W, 5.1 V / 5 A<br/>Pi 4: official 15 W, 5.1 V / 3 A>,
+       fillcolor="#fff4e6", color="#e8590c"];
+  usb_note [shape=note, style=filled, fillcolor="#fff5f5", color="#c92a2a", fontsize=11, margin="0.15,0.08",
+            label=<<b>Pi 5: use the 5 A supply.</b><br align="left"/>With a 3 A (non-5 A) supply the Pi 5<br align="left"/>limits all USB ports to 600 mA total,<br align="left"/>shared by the audio interface.<br align="left"/>>];
+  budget [shape=note, style=filled, fillcolor="#f8f9fa", color="#868e96", fontsize=10, margin="0.15,0.08",
+          label=<<b>Power budget (SPEC §3.6)</b><br align="left"/>Pi 5 running the app: 0.6 to 1.0 A<br align="left"/>Pi 4 running the app: 0.6 to 0.9 A<br align="left"/>USB audio interface: 0.1 to 0.5 A<br align="left"/>display: 0.03 A (LCD) to 0.3 A (MAX7219)<br align="left"/>>];
+
+  // --------------------------------------------------------------- computer
+  pi [label=<<b>Raspberry Pi 5</b> (1 GB+)<br/>or <b>Raspberry Pi 4</b> (1 GB+)<br/><font point-size="10">chord + key detection, Nashville numbers<br/>40-pin header: I2C1, SPI0, GPIO (3.3 V logic)<br/>gpiozero + lgpio</font>>,
+      fillcolor="#d3f9d8", color="#2b8a3e", penwidth=2];
+
+  // --------------------------------------------------------------- displays
+  subgraph cluster_displays {
+    label=<<b>Display</b> (one per build)>; fontsize=13; style="rounded,dashed"; color="#adb5bd";
+    d_lcd [label=<<b>Desktop:</b> 16x2 LCD, PCF8574 backpack<br/><font point-size="10">5 V, I2C 0x27 / 0x3F, through a BSS138 level shifter</font>>];
+    d_ht  [label=<<b>Stage:</b> Adafruit 1.2-inch 7-segment<br/><font point-size="10">HT16K33 backpack, I2C 0x70 (IO at 3.3 V)</font>>];
+    d_tm  [label=<<b>Budget:</b> TM1637 4-digit module<br/><font point-size="10">powered from 3.3 V</font>>];
+    d_max [label=<<b>Legacy:</b> MAX7219 8-digit module<br/><font point-size="10">5 V, through a 74AHCT125 buffer</font>>];
+  }
+
+  // --------------------------------------------------------------- controls
+  subgraph cluster_controls {
+    label=<<b>Controls</b>>; fontsize=13; style="rounded,dashed"; color="#adb5bd";
+    btn [label=<<b>Panel button</b>, 16 mm momentary<br/><font point-size="10">short press: new song<br/>hold 1.5 s: lock key, hold 6 s: safe shutdown</font>>];
+    fsw [label=<<b>Footswitch jack</b>, 1/4-inch mono TS<br/><font point-size="10">Stage build (optional on Budget)<br/>any momentary pedal (Boss FS-5U, sustain pedal)</font>>];
+  }
+
+  // ------------------------------------------------------------------ edges
+  src_line -> usb_if [label="line in (RCA / 1/4-inch)"];
+  src_inst -> usb_if [label="Hi-Z instrument in"];
+  src_mic  -> usb_if [label="mic preamp in"];
+  usb_if -> pi [label="USB"];
+  psu -> pi [label="USB-C, 5.1 V", color="#e8590c", fontcolor="#e8590c", penwidth=2.2];
+  psu -> usb_note [style=dashed, arrowhead=none, color="#c92a2a"];
+  psu -> budget [style=dashed, arrowhead=none, color="#868e96"];
+
+  pi -> d_lcd [label="I2C1: GPIO2/3 (pins 3, 5)"];
+  pi -> d_ht  [label="I2C1: GPIO2/3 (pins 3, 5)"];
+  pi -> d_tm  [label="GPIO23 CLK, GPIO24 DIO (pins 16, 18)"];
+  pi -> d_max [label="SPI0: GPIO10/11/8 (pins 19, 23, 24)"];
+  pi -> btn   [dir=back, label="GPIO17 (pin 11), to GND"];
+  pi -> fsw   [dir=back, label="GPIO27 (pin 13) via R1 1 kΩ, C1 100 nF to GND"];
+
+  // keep the notes in the power column
+  { rank=same; usb_if; psu; }
+  { rank=same; usb_note; budget; }
+}

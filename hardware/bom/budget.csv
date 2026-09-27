@@ -1,0 +1,26 @@
+section,item,qty,specification,example / source,approx unit USD,approx total USD,optional,notes
+Computer,"Raspberry Pi 5, 1 GB",1,"Raspberry Pi 5 1 GB, or a Raspberry Pi 4 Model B 1 GB or larger (the cases fit both)",Raspberry Pi approved resellers,45.00,45.00,,"list prices 2026: Pi 5 1 GB $45, Pi 4 1 GB $35, Pi 4 2 GB $65; the app needs about 60 MB"
+Computer,Power supply,1,"Pi 5: official 27 W USB-C, 5.1 V 5 A. Pi 4: official 15 W USB-C, 5.1 V 3 A ($8)",Raspberry Pi 27 W USB-C power supply,12.00,12.00,,"on a 3 A supply a Pi 5 limits all USB ports to 600 mA, shared with the audio interface"
+Computer,Cooler,1,Pi 5: official Active Cooler. Pi 4: stick-on heatsink,Raspberry Pi Active Cooler,5.00,5.00,,the cases are vented over the cooler
+Computer,microSD card,1,"32 GB, A1 or A2 rated","Raspberry Pi 32 GB card, SanDisk, Samsung",8.00,8.00,,Raspberry Pi OS Lite 64-bit (Bookworm or Trixie)
+Audio,USB audio interface,1,"USB class compliant; choose by source, see hardware/SPEC.md section 4",Behringer UCA222 (line in),30.00,30.00,,"Hi-Z guitar or bass: Behringer UCG102 (~$30) or UM2 (~$50, also takes a mic)"
+Audio,Input cable,1,from your source to the interface,for the UCA222: 1/4-inch TS to 2x RCA,6.00,6.00,,
+Display,"0.56-inch 4-digit 7-segment module, red",1,"TM1637, module PCB about 50.5 x 25 mm","generic ""TM1637 4-digit"" module",3.00,3.00,,"runs on 3.3 V; the 0.36-inch module (42 x 24 mm) also fits, with its own shell"
+Display,"Red filter, 2 mm transparent acrylic",1,stage: 116 x 46 mm; budget 0.56-inch: 54 x 23 mm,"laser-cut from hardware/enclosures/cut/, or hand-cut from an A5 sheet",5.00,5.00,yes,improves contrast under stage lights; a red lighting gel on clear acrylic also works
+Controls,"Push button, 16 mm, momentary",1,"normally open, 16 mm panel hole, up to 35 mm deep behind the panel",metal 16 mm momentary button with solder lugs or screw terminals,3.00,3.00,,new song / lock key / safe shutdown
+Controls,Footswitch jack,1,"1/4-inch (6.35 mm) mono TS, open frame, 3/8-inch bush for a 9.5 mm hole",Switchcraft 11 or a generic open-frame mono jack,2.00,2.00,yes,goes in the back wall of the floor wedge
+Controls,R1 resistor 1 kOhm,1,"0.25 W, 5 % or better, axial",any carbon or metal film,0.10,0.10,yes,"in series with the jack tip, soldered at the jack"
+Controls,C1 capacitor 100 nF,1,"ceramic X7R, 50 V or more, through-hole (marked 104)",any radial MLCC or disc,0.20,0.20,yes,"jack tip (GPIO side of R1) to sleeve, soldered at the jack"
+Controls,"Footswitch, momentary",1,"momentary, with a 1/4-inch TS cable; normally open or closed","Boss FS-5U, or any momentary sustain pedal",25.00,25.00,yes,the software learns the pedal polarity; skip it if you own one
+Wiring,"Dupont jumper wires F-F, 20 cm",1,"2.54 mm, 26-28 AWG, 40-way rainbow ribbon; peel off what you need",any 40-way F-F 20 cm jumper ribbon,5.00,5.00,,"uses 12 (desktop), 9 (stage), 6 (budget, 8 with a footswitch); colours in wiring/README.md"
+Wiring,Heat-shrink tubing,1,"2:1, 3.2 mm and 4.8 mm",share of an assortment,1.00,1.00,,lengths per build in wiring/README.md
+Wiring,"Cable tie, 2.5 mm",1,small nylon tie,any,0.05,0.05,yes,strain relief at the jack
+Wiring,Solder,1,"rosin core, 0.8 mm",any,0.00,0.00,,about 20 cm
+Enclosure,"Filament, grams",220,"desktop: PLA or PETG; floor wedge: PETG. 0.2 mm layers, 3 perimeters, 20 % infill",any 1.75 mm filament,0.02,4.40,,estimated from the part volumes; STLs in enclosures/stl/
+Enclosure,Heat-set insert M3,3,"for a 4.0 mm hole, up to 6 mm long",CNC Kitchen or Ruthex M3 x 5.7,0.10,0.30,,"case closure; or M3 thread-forming screws with closure = ""selftap"""
+Enclosure,Screw M3 x 8,3,button head (ISO 7380) or socket head (ISO 4762),any,0.10,0.30,,through the base plate into the inserts
+Enclosure,Screw M2.5 x 8,6,"pan or button head; self-tapping for plastic, or a machine screw",any,0.10,0.60,,"4 hold the Pi; the rest hold the display clamp tabs (3 desktop, 4 stage, 2 budget)"
+Enclosure,Rubber bumpers,4,"adhesive, up to 13 mm diameter (12.7 mm is common), about 3 mm tall",any,0.15,0.60,,recesses under the base
+Enclosure,"Hook-and-loop or 3M Dual Lock, 25 x 60 mm",2,adhesive backed,any,1.00,2.00,yes,for pedalboard mounting; recesses under the base
+Total,required parts,,,,,124.20,,
+Total,including optional parts,,,,,158.55,,

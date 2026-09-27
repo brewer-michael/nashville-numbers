@@ -1,0 +1,1280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nashville Numbers Parts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ground: #f1f4f1;
+    --surface: #ffffff;
+    --ink: #17201c;
+    --ink-2: #536059;
+    --ink-3: #7b8780;
+    --rule: #dae1dc;
+    --rule-2: #c3ccc6;
+    --mat: #1d4637;
+    --mat-ink: #eaf2ed;
+    --mat-ink-2: #a8c3b5;
+    --mat-line: rgba(234, 242, 237, 0.08);
+    --mat-tick: rgba(234, 242, 237, 0.4);
+    --led: #ff3d2e;
+    --led-off: rgba(255, 61, 46, 0.11);
+    --led-bg: #140806;
+    --link: #1c6a51;
+    --chip-hover: #e4f0e9;
+    --got: #1f7a4e;
+    --opt-bg: #f4e9c6;
+    --opt-ink: #6a5215;
+    --focus: #d98200;
+    --shadow: 0 1px 2px rgba(23, 32, 28, 0.05), 0 2px 8px rgba(23, 32, 28, 0.04);
+    --check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.2 4.2L19 7' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --f-body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+    --f-cond: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0e1311;
+      --surface: #151c19;
+      --ink: #e3eae5;
+      --ink-2: #9eaba4;
+      --ink-3: #74807a;
+      --rule: #243029;
+      --rule-2: #34423a;
+      --mat: #143427;
+      --mat-ink: #e3eae5;
+      --mat-ink-2: #92ae9f;
+      --link: #86d4b3;
+      --chip-hover: #1c2c24;
+      --got: #6fd19a;
+      --opt-bg: #3a3116;
+      --opt-ink: #ead28a;
+      --focus: #ffb347;
+      --shadow: none;
+      --check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.2 4.2L19 7' fill='none' stroke='%230e1311' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0e1311;
+    --surface: #151c19;
+    --ink: #e3eae5;
+    --ink-2: #9eaba4;
+    --ink-3: #74807a;
+    --rule: #243029;
+    --rule-2: #34423a;
+    --mat: #143427;
+    --mat-ink: #e3eae5;
+    --mat-ink-2: #92ae9f;
+    --link: #86d4b3;
+    --chip-hover: #1c2c24;
+    --got: #6fd19a;
+    --opt-bg: #3a3116;
+    --opt-ink: #ead28a;
+    --focus: #ffb347;
+    --shadow: none;
+    --check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.2 4.2L19 7' fill='none' stroke='%230e1311' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 400 16px/1.5 var(--f-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--link); }
+  .wrap { max-width: 1060px; margin-inline: auto; padding-inline: clamp(16px, 4vw, 36px); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ---- header: a cutting mat ---- */
+  .mat {
+    background-color: var(--mat);
+    background-image:
+      linear-gradient(var(--mat-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--mat-line) 1px, transparent 1px);
+    background-size: 25px 25px;
+    color: var(--mat-ink);
+  }
+  .mat-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 24px 40px;
+    align-items: end;
+    padding-block: 34px 26px;
+  }
+  .eyebrow {
+    font: 600 13px/1 var(--f-cond);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mat-ink-2);
+    margin: 0;
+  }
+  h1 {
+    font: 700 clamp(42px, 7.5vw, 68px)/0.92 var(--f-cond);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin: 12px 0 14px;
+    text-wrap: balance;
+  }
+  .lede { margin: 0; max-width: 54ch; color: var(--mat-ink-2); }
+  .readouts { display: flex; flex-wrap: wrap; gap: 14px; }
+  .readout { display: grid; gap: 7px; margin: 0; }
+  .readout figcaption {
+    font: 600 12px/1 var(--f-cond);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mat-ink-2);
+  }
+  .led {
+    background: radial-gradient(120% 90% at 30% 20%, #2a0d09 0%, var(--led-bg) 60%);
+    border-radius: 9px;
+    padding: 11px 13px 11px 9px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), inset 0 3px 12px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  .led svg { display: block; width: clamp(118px, 15vw, 150px); height: auto; }
+  .seg { fill: var(--led-off); transition: fill 0.12s; }
+  .seg.on { fill: var(--led); }
+  .builds {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0;
+    padding: 0 0 22px;
+    border: 0;
+  }
+  .build { position: relative; min-width: 0; }
+  .build input { position: absolute; opacity: 0; pointer-events: none; }
+  .build label {
+    display: grid;
+    gap: 3px;
+    height: 100%;
+    padding: 12px 14px 13px;
+    border-radius: 10px;
+    border: 1px solid rgba(234, 242, 237, 0.2);
+    background: rgba(234, 242, 237, 0.05);
+    color: var(--mat-ink);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .build label:hover { background: rgba(234, 242, 237, 0.1); }
+  .build input:checked + label {
+    background: var(--surface);
+    color: var(--ink);
+    border-color: transparent;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+  }
+  .build input:focus-visible + label { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .build-name { font: 700 21px/1.05 var(--f-cond); text-transform: uppercase; letter-spacing: 0.05em; }
+  .build-line { font-size: 14px; line-height: 1.35; opacity: 0.85; }
+  .build-cost { font: 500 13px/1.3 var(--f-mono); margin-top: 5px; opacity: 0.9; font-variant-numeric: tabular-nums; }
+  .ruler {
+    height: 12px;
+    background:
+      repeating-linear-gradient(90deg, var(--mat-tick) 0 1px, transparent 1px 5px) left bottom / 100% 5px no-repeat,
+      repeating-linear-gradient(90deg, var(--mat-tick) 0 1px, transparent 1px 25px) left bottom / 100% 11px no-repeat;
+  }
+
+  /* ---- toolbar ---- */
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 28px;
+    padding-block: 20px 22px;
+  }
+  .summary { margin: 0; font-size: 17px; }
+  .summary strong { font-weight: 600; }
+  .summary .opt-note { display: block; font-size: 15px; color: var(--ink-2); }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; }
+  .switch { display: inline-flex; align-items: center; gap: 9px; font-size: 15px; cursor: pointer; user-select: none; }
+  .switch input { position: absolute; opacity: 0; pointer-events: none; }
+  .track {
+    width: 36px; height: 21px; border-radius: 999px;
+    background: var(--rule-2); position: relative; flex: none;
+    transition: background 0.15s;
+  }
+  .knob {
+    position: absolute; top: 3px; left: 3px; width: 15px; height: 15px;
+    border-radius: 50%; background: var(--surface);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    transition: transform 0.15s;
+  }
+  .switch input:checked + .track { background: var(--got); }
+  .switch input:checked + .track .knob { transform: translateX(15px); }
+  .switch input:focus-visible + .track { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .status {
+    display: inline-flex; align-items: center; gap: 7px;
+    font: 500 13px/1.2 var(--f-mono); color: var(--ink-2);
+  }
+  .status::before {
+    content: ""; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--ink-3); flex: none;
+  }
+  .status[data-kind="saved"]::before { background: var(--got); }
+  .status[data-kind="saving"]::before { background: var(--focus); }
+  .status[data-kind="error"]::before, .status[data-kind="readonly"]::before { background: var(--led); }
+
+  /* ---- parts list ---- */
+  .group { margin-block: 0 28px; }
+  .group-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 6px; margin-bottom: 10px;
+  }
+  .group h2 {
+    font: 700 23px/1 var(--f-cond);
+    text-transform: uppercase; letter-spacing: 0.06em; margin: 0;
+  }
+  .count { font: 500 13px/1 var(--f-mono); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    column-gap: 14px;
+    padding: 15px 16px 16px;
+    border-top: 1px solid var(--rule);
+    transition: opacity 0.35s;
+  }
+  .card > .row:first-child { border-top: 0; }
+  .row.leaving { opacity: 0.35; }
+  .tick {
+    appearance: none; -webkit-appearance: none;
+    grid-row: 1 / span 2;
+    width: 28px; height: 28px; margin: 0;
+    border: 2px solid var(--rule-2); border-radius: 7px;
+    background: var(--surface) center / 18px no-repeat;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+  .tick:hover { border-color: var(--got); }
+  .tick:checked { background-color: var(--got); background-image: var(--check); border-color: var(--got); }
+  .tick:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .tick:disabled { opacity: 0.4; cursor: default; }
+  .what { grid-column: 2; cursor: pointer; }
+  .name { font-weight: 600; font-size: 17px; line-height: 1.3; }
+  .qty {
+    font: 500 14px/1 var(--f-mono); color: var(--ink-2);
+    margin-right: 7px; white-space: nowrap; font-variant-numeric: tabular-nums;
+  }
+  .badge {
+    display: inline-block; vertical-align: 2px; margin-left: 6px;
+    font: 600 11px/1 var(--f-cond); letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 7px 3px; border-radius: 4px;
+    background: var(--opt-bg); color: var(--opt-ink);
+  }
+  .spec { display: block; color: var(--ink-2); font-size: 15px; margin-top: 3px; max-width: 72ch; }
+  .shops { grid-column: 2; display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+  .shop {
+    display: inline-flex; align-items: center; gap: 5px;
+    font: 500 14px/1 var(--f-body);
+    padding: 7px 11px 7px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--rule-2);
+    color: var(--link);
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .shop::after { content: "↗"; font-size: 12px; opacity: 0.7; }
+  .shop:hover { background: var(--chip-hover); border-color: var(--link); }
+  .shop:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .price {
+    grid-column: 3; grid-row: 1;
+    text-align: right; white-space: nowrap;
+    font: 500 15px/1.3 var(--f-mono); font-variant-numeric: tabular-nums;
+  }
+  .pack { display: block; font: 400 12px/1.3 var(--f-body); color: var(--ink-3); }
+  .row.is-got .name, .row.is-got .spec { color: var(--ink-3); }
+  .row.is-got .price { color: var(--ink-3); text-decoration: line-through; }
+
+  /* ---- footer ---- */
+  .foot {
+    border-top: 1px solid var(--rule);
+    margin-top: 8px;
+    padding-block: 22px 44px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px 32px;
+    align-items: start;
+  }
+  .notes { display: grid; gap: 10px; color: var(--ink-2); font-size: 15px; max-width: 70ch; }
+  .notes p { margin: 0; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
+  .btn {
+    font: 600 14px/1 var(--f-body);
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--rule-2);
+    background: var(--surface);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .btn:hover { border-color: var(--ink-2); }
+  .btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .btn[data-confirm="1"] { border-color: var(--led); color: var(--led); }
+  .btn:disabled { opacity: 0.45; cursor: default; }
+  .copybox {
+    grid-column: 1 / -1;
+    width: 100%; min-height: 180px;
+    font: 400 13px/1.5 var(--f-mono);
+    padding: 12px; border-radius: 8px;
+    border: 1px solid var(--rule-2); background: var(--surface); color: var(--ink);
+  }
+
+  @media (max-width: 760px) {
+    .mat-top { grid-template-columns: minmax(0, 1fr); }
+    .builds { grid-template-columns: minmax(0, 1fr); }
+    .build label { grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; column-gap: 12px; }
+    .build-line { grid-column: 1; }
+    .build-cost { grid-column: 2; grid-row: 1; margin-top: 0; }
+    .foot { grid-template-columns: minmax(0, 1fr); }
+    .actions { justify-content: flex-start; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<!--
+  Shopping checklist for the Nashville Numbers builds. Open this file in a
+  browser; ticks are kept in that browser.
+
+  The parts, their quantities and optional flags come from
+  tools/build_bom.py, which rewrites the "parts data" block below: run it
+  after changing the parts table. Names, store links, pack prices and
+  descriptions are in the "shop-data" block, edited by hand;
+  build_bom.py --check fails when a part has no shop-data entry.
+-->
+
+<header class="mat">
+  <div class="wrap">
+    <div class="mat-top">
+      <div>
+        <p class="eyebrow">Nashville Numbers &middot; Hardware</p>
+        <h1>Parts checklist</h1>
+        <p class="lede">Everything one build needs, with links to real listings. Tick a part when it's in your hands, bought or already in the drawer. <span id="save-note"></span></p>
+      </div>
+      <div class="readouts">
+        <figure class="readout">
+          <div class="led" id="led-parts" role="img" aria-label="Parts to get: loading"></div>
+          <figcaption>Parts to get</figcaption>
+        </figure>
+        <figure class="readout">
+          <div class="led" id="led-usd" role="img" aria-label="Dollars to spend: loading"></div>
+          <figcaption>USD to spend</figcaption>
+        </figure>
+      </div>
+    </div>
+    <fieldset class="builds" id="builds">
+      <legend class="sr">Which build</legend>
+    </fieldset>
+  </div>
+  <div class="ruler" aria-hidden="true"></div>
+</header>
+
+<main class="wrap">
+  <div class="toolbar">
+    <p class="summary" id="summary" aria-live="polite">Loading your checklist&hellip;</p>
+    <div class="controls">
+      <label class="switch" for="hide-got">
+        <input type="checkbox" id="hide-got">
+        <span class="track" aria-hidden="true"><span class="knob"></span></span>
+        Hide parts I have
+      </label>
+      <label class="switch" for="show-opt">
+        <input type="checkbox" id="show-opt" checked>
+        <span class="track" aria-hidden="true"><span class="knob"></span></span>
+        Show optional parts
+      </label>
+      <span class="status" id="status" data-kind="loading">Loading&hellip;</span>
+    </div>
+  </div>
+
+  <div id="list"></div>
+
+  <footer class="foot">
+    <div class="notes">
+      <p>Prices are rough US prices from September 2026 for the item or pack each listing sells. Small parts come in packs, so a first build costs more than its per-unit bill of materials (<span id="bom-totals">see the BOM</span>). The rest is spares.</p>
+      <p>Displays differ between sellers by a few millimetres. Before you print the case, measure your LCD or TM1637 module against the sizes in the enclosure guide.</p>
+      <p>Source: <a href="https://github.com/brewer-michael/nashville-numbers" target="_blank" rel="noopener">brewer-michael/nashville-numbers</a>, <code>hardware/bom</code> and <code>hardware/enclosures</code>.</p>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn" id="copy">Copy what's left</button>
+      <button type="button" class="btn" id="reset">Clear all ticks</button>
+    </div>
+    <textarea class="copybox" id="copybox" readonly hidden aria-label="Shopping list to copy"></textarea>
+  </footer>
+</main>
+
+<!-- BEGIN GENERATED: parts data -->
+<script type="application/json" id="bom-data">
+{"builds": ["desktop", "stage", "budget"],
+"parts": [
+{"id": "pi", "section": "Computer", "item": "Raspberry Pi 5, 1 GB", "use": {"desktop": 1, "stage": 1, "budget": 1}, "optional": [], "unit": null, "bomUsd": 45.0},
+{"id": "psu", "section": "Computer", "item": "Power supply", "use": {"desktop": 1, "stage": 1, "budget": 1}, "optional": [], "unit": null, "bomUsd": 12.0},
+{"id": "cooler", "section": "Computer", "item": "Cooler", "use": {"desktop": 1, "stage": 1, "budget": 1}, "optional": [], "unit": null, "bomUsd": 5.0},
+{"id": "sd", "section": "Computer", "item": "microSD card", "use": {"desktop": 1, "stage": 1, "budget": 1}, "optional": [], "unit": null, "bomUsd": 8.0},
+{"id": "audio", "section": "Audio", "item": "USB audio interface", "use": {"desktop": 1, "stage": 1, "budget": 1}, "optional": [], "unit": null, "bomUsd": 30.0},
+{"id": "cable", "section": "Audio", "item": "Input cable", "use": {"desktop": 1, "stage": 1, "budget": 1}, "optional": [], "unit": null, "bomUsd": 6.0},
+{"id": "lcd", "section": "Display", "item": "16x2 character LCD with I2C backpack", "use": {"desktop": 1}, "optional": [], "unit": null, "bomUsd": 7.0},
+{"id": "shifter", "section": "Display", "item": "I2C level shifter", "use": {"desktop": 1}, "optional": [], "unit": null, "bomUsd": 4.0},
+{"id": "ht16k33", "section": "Display", "item": "1.2-inch 4-digit 7-segment display with I2C backpack, red", "use": {"stage": 1}, "optional": [], "unit": null, "bomUsd": 17.5},
+{"id": "tm1637", "section": "Display", "item": "0.56-inch 4-digit 7-segment module, red", "use": {"budget": 1}, "optional": [], "unit": null, "bomUsd": 3.0},
+{"id": "filter", "section": "Display", "item": "Red filter, 2 mm transparent acrylic", "use": {"stage": 1, "budget": 1}, "optional": ["budget"], "unit": null, "bomUsd": 5.0},
+{"id": "button", "section": "Controls", "item": "Push button, 16 mm, momentary", "use": {"desktop": 1, "stage": 1, "budget": 1}, "optional": [], "unit": null, "bomUsd": 3.0},
+{"id": "jack", "section": "Controls", "item": "Footswitch jack", "use": {"stage": 1, "budget": 1}, "optional": ["budget"], "unit": null, "bomUsd": 2.0},
+{"id": "r1", "section": "Controls", "item": "R1 resistor 1 kOhm", "use": {"stage": 1, "budget": 1}, "optional": ["budget"], "unit": null, "bomUsd": 0.1},
+{"id": "c1", "section": "Controls", "item": "C1 capacitor 100 nF", "use": {"stage": 1, "budget": 1}, "optional": ["budget"], "unit": null, "bomUsd": 0.2},
+{"id": "footswitch", "section": "Controls", "item": "Footswitch, momentary", "use": {"stage": 1, "budget": 1}, "optional": ["stage", "budget"], "unit": null, "bomUsd": 25.0},
+{"id": "jumpers", "section": "Wiring", "item": "Dupont jumper wires F-F, 20 cm", "use": {"desktop": 1, "stage": 1, "budget": 1}, "optional": [], "unit": null, "bomUsd": 5.0},
+{"id": "heatshrink", "section": "Wiring", "item": "Heat-shrink tubing", "use": {"desktop": 1, "stage": 1, "budget": 1}, "optional": [], "unit": null, "bomUsd": 1.0},
+{"id": "tie", "section": "Wiring", "item": "Cable tie, 2.5 mm", "use": {"stage": 1, "budget": 1}, "optional": ["budget"], "unit": null, "bomUsd": 0.05},
+{"id": "solder", "section": "Wiring", "item": "Solder", "use": {"desktop": 1, "stage": 1, "budget": 1}, "optional": [], "unit": null, "bomUsd": 0.0},
+{"id": "filament", "section": "Enclosure", "item": "Filament, grams", "use": {"desktop": 130, "stage": 205, "budget": 220}, "optional": [], "unit": "g", "bomUsd": 0.02},
+{"id": "inserts", "section": "Enclosure", "item": "Heat-set insert M3", "use": {"desktop": 3, "stage": 3, "budget": 3}, "optional": [], "unit": null, "bomUsd": 0.1},
+{"id": "m3", "section": "Enclosure", "item": "Screw M3 x 8", "use": {"desktop": 3, "stage": 3, "budget": 3}, "optional": [], "unit": null, "bomUsd": 0.1},
+{"id": "m25", "section": "Enclosure", "item": "Screw M2.5 x 8", "use": {"desktop": 7, "stage": 8, "budget": 6}, "optional": [], "unit": null, "bomUsd": 0.1},
+{"id": "bumpers", "section": "Enclosure", "item": "Rubber bumpers", "use": {"desktop": 4, "stage": 4, "budget": 4}, "optional": [], "unit": null, "bomUsd": 0.15},
+{"id": "foamtape", "section": "Enclosure", "item": "Double-sided foam tape", "use": {"desktop": 1}, "optional": [], "unit": null, "bomUsd": 0.2},
+{"id": "duallock", "section": "Enclosure", "item": "Hook-and-loop or 3M Dual Lock, 25 x 60 mm", "use": {"stage": 2, "budget": 2}, "optional": ["stage", "budget"], "unit": null, "bomUsd": 1.0}
+]}
+</script>
+<!-- END GENERATED: parts data -->
+<script type="application/json" id="shop-data">
+{
+ "builds": {
+  "desktop": {"name": "Desktop", "line": "16×2 LCD in a desk case"},
+  "stage": {"name": "Stage", "line": "1.2-inch red digits, floor wedge, footswitch"},
+  "budget": {"name": "Budget", "line": "0.56-inch red digits, floor wedge"}
+ },
+ "parts": {
+  "pi": {
+   "title": "Raspberry Pi 5, 1 GB",
+   "price": 45,
+   "spec": "A Pi 4 Model B with 1 GB or more works too and fits the same cases. The app needs about 60 MB. 2026 prices: Pi 5 1 GB $45, Pi 4 1 GB $35, Pi 4 2 GB $65.",
+   "shops": [
+    ["Adafruit", "https://www.adafruit.com/product/6447"],
+    ["Micro Center", "https://www.microcenter.com/product/704295/raspberry-pi-5-1gb"],
+    ["CanaKit", "https://www.canakit.com/raspberry-pi-5-1gb.html"]
+   ]
+  },
+  "psu": {
+   "title": "Raspberry Pi 27 W USB-C power supply",
+   "price": 12,
+   "spec": "5.1 V, 5 A. On a weaker supply the Pi 5 limits USB to 600 mA, shared with the audio interface. With a Pi 4, get the official 15 W supply instead.",
+   "shops": [
+    ["PiShop", "https://www.pishop.us/product/raspberry-pi-27w-usb-c-power-supply-white-us/"],
+    ["Micro Center", "https://www.microcenter.com/product/671926/raspberry-pi-27w-usb-c-psu-white"],
+    ["SparkFun", "https://www.sparkfun.com/raspberry-pi-27w-usb-c-pd-power-supply-white.html"]
+   ]
+  },
+  "cooler": {
+   "title": "Raspberry Pi Active Cooler",
+   "price": 5,
+   "spec": "Clips onto the Pi 5; the cases are vented above it. With a Pi 4, a stick-on heatsink instead.",
+   "shops": [
+    ["Adafruit", "https://www.adafruit.com/product/5815"],
+    ["PiShop", "https://www.pishop.us/product/raspberry-pi-active-cooler/"],
+    ["CanaKit", "https://www.canakit.com/raspberry-pi-5-active-cooler.html"]
+   ]
+  },
+  "sd": {
+   "title": "microSD card, 32 GB A2",
+   "price": 10,
+   "spec": "For Raspberry Pi OS Lite 64-bit. Flash it before you close the case: the slot ends up inside.",
+   "shops": [
+    ["Adafruit", "https://www.adafruit.com/product/6010"],
+    ["PiShop", "https://www.pishop.us/product/raspberry-pi-sd-card-32gb/"],
+    ["Amazon", "https://www.amazon.com/dp/B0DM9JHXXN"]
+   ]
+  },
+  "audio": {
+   "title": "Behringer UCA222 USB audio interface",
+   "price": 30,
+   "spec": "Class compliant, no drivers, line-level RCA inputs. Plugging a guitar or bass straight in? Get a Hi-Z interface such as the Behringer UCG102 or UM2 instead.",
+   "shops": [
+    ["Sweetwater", "https://www.sweetwater.com/store/detail/UCA222--behringer-u-control-uca222-usb-audio-interface"],
+    ["Amazon", "https://www.amazon.com/dp/B0023BYDHK"]
+   ]
+  },
+  "cable": {
+   "title": "Hosa CYR-303 Y cable, 1/4-inch TS to 2 × RCA, 9 ft",
+   "price": 12,
+   "spec": "Feeds one mono source (mixer aux, keyboard, pedalboard output) into both UCA222 inputs. The CYR-101 is the same cable, 3 ft long.",
+   "shops": [
+    ["Sweetwater", "https://www.sweetwater.com/store/detail/CYR103--hosa-cyr-303-y-cable-1-4-inch-ts-to-dual-rca-9-foot"],
+    ["CYR-101 (3 ft)", "https://www.sweetwater.com/store/detail/CYR101--hosa-cyr-101-y-cable-1-4-inch-ts-to-dual-rca-3-foot"]
+   ]
+  },
+  "lcd": {
+   "title": "16×2 character LCD with I2C backpack",
+   "price": 12,
+   "pack": "2-pack",
+   "spec": "HD44780 with a PCF8574 backpack (address 0x27 or 0x3F). The case expects an 80 × 36 mm board and a 71.2 × 24.2 mm bezel.",
+   "shops": [
+    ["GeeekPi · Amazon", "https://www.amazon.com/dp/B07S7PJYM6"],
+    ["HiLetgo · Amazon", "https://www.amazon.com/dp/B07W5KC65S"],
+    ["SunFounder", "https://www.sunfounder.com/products/i2c-lcd1602-module"]
+   ]
+  },
+  "shifter": {
+   "title": "I2C level shifter, BSS138, 4 channels",
+   "price": 4,
+   "spec": "Keeps the LCD backpack's 5 V pull-ups off the Pi's 3.3 V pins.",
+   "shops": [
+    ["Adafruit 757", "https://www.adafruit.com/product/757"],
+    ["DigiKey", "https://www.digikey.com/en/products/detail/adafruit-industries-llc/757/4990756"],
+    ["Amazon", "https://www.amazon.com/dp/B00NAY3J7O"]
+   ]
+  },
+  "ht16k33": {
+   "title": "Adafruit 1.2-inch 4-digit 7-segment display, red",
+   "price": 17.5,
+   "spec": "HT16K33 I2C backpack, digits 30 mm tall. It's a kit: you solder the display and the header onto the backpack.",
+   "shops": [
+    ["Adafruit 1270", "https://www.adafruit.com/product/1270"],
+    ["Jameco", "https://www.jameco.com/z/1270-Adafruit-Industries-Adafruit-1-2-4-Digit-7-Segment-Display-with-I2C-Backpack-Red_2504799.html"]
+   ]
+  },
+  "tm1637": {
+   "title": "TM1637 4-digit 7-segment module, 0.56-inch, red",
+   "price": 10,
+   "pack": "4 or 5-pack",
+   "spec": "About 50.5 × 25 mm; sizes vary between sellers. Runs on 3.3 V.",
+   "shops": [
+    ["diymore · Amazon", "https://www.amazon.com/dp/B078J2BRRB"],
+    ["Zerodis · Amazon", "https://www.amazon.com/dp/B0CD4HQ83P"]
+   ]
+  },
+  "filter": {
+   "title": "Red filter, transparent red acrylic",
+   "price": 12,
+   "pack": "12 × 12 in sheet",
+   "spec": {
+    "stage": "Cut to 116 × 46 mm (DXF and SVG in the repo). Use 2 mm or 1/16-inch sheet, not 1/8-inch. Colour 2423 is the usual transparent red.",
+    "budget": "Cut to 54 × 23 mm (DXF and SVG in the repo). Use 2 mm or 1/16-inch sheet, not 1/8-inch."
+   },
+   "shops": [
+    ["ToolsToday, 1/16 in", "https://toolstoday.com/acrylic-transparent-red-1-16-thickness-12-x-12.html"],
+    ["Custom Made Better, 1/16 in", "https://www.custommadebetter.com/products/transparent-red-acrylic-sheets-1-16"],
+    ["Ponoko laser cutting", "https://www.ponoko.com/laser-cutting/acrylic"]
+   ]
+  },
+  "button": {
+   "title": "Push button, 16 mm, momentary",
+   "price": 2,
+   "spec": "Normally open, 16 mm panel hole. Short press: new song. Hold: lock the key. Long hold: safe shutdown.",
+   "shops": [
+    ["Adafruit, red", "https://www.adafruit.com/product/1445"],
+    ["Adafruit, black", "https://www.adafruit.com/product/1505"]
+   ]
+  },
+  "jack": {
+   "title": "Switchcraft 11 1/4-inch mono jack, open frame",
+   "price": 3.5,
+   "spec": "For the footswitch, in the back wall. Its 3/8-inch bush fits the case's 9.6 mm hole.",
+   "shops": [
+    ["Parts Express", "https://www.parts-express.com/Switchcraft-11-1-4-Mono-Jack-with-Nut-Washer-093-104"],
+    ["Amplified Parts", "https://www.amplifiedparts.com/products/14-jack-switchcraft-11-mono-open-frame-open-circuit"],
+    ["B&H", "https://www.bhphotovideo.com/c/product/929535-REG/switchcraft_11_1_4_mono_2_conductor.html"]
+   ]
+  },
+  "r1": {
+   "title": "R1: 1 kΩ resistor, 1/4 W",
+   "price": 0.75,
+   "pack": "pack of 25",
+   "spec": "In series with the jack's tip, soldered at the jack.",
+   "shops": [
+    ["Adafruit 4294", "https://www.adafruit.com/product/4294"]
+   ]
+  },
+  "c1": {
+   "title": "C1: 100 nF ceramic capacitor",
+   "price": 1.95,
+   "pack": "pack of 10",
+   "spec": "From the GPIO side of R1 to the sleeve, at the jack. Marked 104.",
+   "shops": [
+    ["Adafruit 753", "https://www.adafruit.com/product/753"],
+    ["Amazon", "https://www.amazon.com/dp/B09H27G5N8"]
+   ]
+  },
+  "footswitch": {
+   "title": "Boss FS-5U momentary footswitch",
+   "price": 35,
+   "spec": "Any momentary pedal with a 1/4-inch TS plug works, sustain pedals included; the app learns its polarity. Latching pedals don't work.",
+   "shops": [
+    ["Sweetwater", "https://www.sweetwater.com/store/detail/FS5U--boss-fs-5u-non-latching-footswitch"]
+   ]
+  },
+  "jumpers": {
+   "title": "Dupont jumper wires, female-female, 20 cm",
+   "price": 7,
+   "pack": "120-wire kit",
+   "spec": {
+    "desktop": "Uses 12 of the kit's 40 female-female wires. The colour for each wire is in the wiring guide.",
+    "stage": "Uses 9 of the kit's 40 female-female wires. The colour for each wire is in the wiring guide.",
+    "budget": "Uses 6 of the kit's 40 female-female wires, 8 with the footswitch. The colour for each wire is in the wiring guide."
+   },
+   "shops": [
+    ["Elegoo · Amazon", "https://www.amazon.com/dp/B01EV70C78"]
+   ]
+  },
+  "heatshrink": {
+   "title": "Heat-shrink tubing, 3.2 and 4.8 mm",
+   "price": 5,
+   "pack": "assortment",
+   "spec": "The Adafruit pack has 3/32, 1/8 and 3/16 inch (2.4, 3.2 and 4.8 mm).",
+   "shops": [
+    ["Adafruit 1649", "https://www.adafruit.com/product/1649"],
+    ["Adafruit pre-cut kit", "https://www.adafruit.com/product/4559"]
+   ]
+  },
+  "tie": {
+   "title": "Small cable tie, 4 inch",
+   "price": 5,
+   "pack": "200-pack",
+   "spec": "Strain relief for the leads at the jack.",
+   "shops": [
+    ["Amazon Basics", "https://www.amazon.com/dp/B087MKMSDY"]
+   ]
+  },
+  "solder": {
+   "title": "Solder, rosin core, 0.8 mm",
+   "price": 6,
+   "pack": "100 g spool",
+   "spec": "You need about 20 cm. 60/40 flows most easily; SAC305 if you want lead-free.",
+   "shops": [
+    ["Adafruit 60/40", "https://www.adafruit.com/product/145"],
+    ["Adafruit lead-free", "https://www.adafruit.com/product/734"]
+   ]
+  },
+  "filament": {
+   "title": "PETG filament, 1.75 mm",
+   "price": 20,
+   "pack": "1 kg spool",
+   "spec": {
+    "desktop": "PLA works for the desktop case too.",
+    "stage": "Use PETG for the floor wedge: it's tougher and survives a hot car.",
+    "budget": "Use PETG for the floor wedge: it's tougher and survives a hot car."
+   },
+   "shops": [
+    ["Polymaker · Amazon", "https://www.amazon.com/dp/B09DKPTFGC"],
+    ["Prusament", "https://www.prusa3d.com/product/prusament-petg-jet-black-1kg/"]
+   ]
+  },
+  "inserts": {
+   "title": "M3 heat-set inserts",
+   "price": 12,
+   "pack": "pack of 100",
+   "spec": "For a 4.0 mm hole, up to 6 mm long (M3 × 5.7).",
+   "shops": [
+    ["CNC Kitchen", "https://cnckitchen.store/products/heat-set-insert-m3-x-5-7-100-pieces"],
+    ["ruthex · Amazon", "https://www.amazon.com/dp/B08BCRZZS3"]
+   ]
+  },
+  "m3": {
+   "title": "M3 × 8 mm button-head screws",
+   "price": 8,
+   "pack": "pack of 100",
+   "spec": "Close the case: up through the base into the inserts. Lengths from 6 to 10 mm work.",
+   "shops": [
+    ["Fullerkreg · Amazon", "https://www.amazon.com/dp/B07H14B2XM"]
+   ]
+  },
+  "m25": {
+   "title": "M2.5 × 8 mm pan-head screws",
+   "price": 7,
+   "pack": "pack of 30",
+   "spec": {
+    "desktop": "4 hold the Pi, 3 hold the LCD clamp tabs. Stainless machine screws cut their own thread in the printed holes.",
+    "stage": "4 hold the Pi, 4 hold the display clamp tabs. Stainless machine screws cut their own thread in the printed holes.",
+    "budget": "4 hold the Pi, 2 hold the display clamp tabs. Stainless machine screws cut their own thread in the printed holes."
+   },
+   "shops": [
+    ["MroMax · Amazon", "https://www.amazon.com/dp/B07YCC78KN"],
+    ["Accu", "https://accu-components.com/us/phillips-pan-head-screws/65390-SIP-M2-5-8-A2"]
+   ]
+  },
+  "bumpers": {
+   "title": "Rubber bumper feet",
+   "price": 8,
+   "pack": "56-pack",
+   "spec": "Adhesive, up to 13 mm across, for the round recesses under the base.",
+   "shops": [
+    ["3M SJ5003 · Amazon", "https://www.amazon.com/dp/B0048FFX1O"]
+   ]
+  },
+  "foamtape": {
+   "title": "Double-sided foam tape",
+   "price": 7,
+   "pack": "48 squares",
+   "spec": "One 1-inch square holds the level shifter to the base plate.",
+   "shops": [
+    ["Scotch 311DC · Amazon", "https://www.amazon.com/dp/B07DM7VDNL"]
+   ]
+  },
+  "duallock": {
+   "title": "3M Dual Lock strips, 1 × 3 inch",
+   "price": 9,
+   "pack": "8 strips",
+   "spec": "For a pedalboard. Trim two strips to 60 mm for the long recesses under the base.",
+   "shops": [
+    ["Amazon", "https://www.amazon.com/dp/B0DJNBW9LP"]
+   ]
+  }
+ },
+ "tools": [
+  {
+   "id": "tool-iron",
+   "title": "Soldering iron",
+   "spec": "Any temperature-controlled iron. The Pinecil runs from a USB-C PD charger.",
+   "shops": [
+     ["Pinecil · Pine64", "https://pine64.com/product/pinecil-smart-mini-portable-soldering-iron/"],
+     ["Pinecil · Micro Center", "https://www.microcenter.com/product/684574/pine64-pinecil-smart-mini-portable-soldering-iron-(version-2)-small"]
+   ]
+  },
+  {
+   "id": "tool-tip",
+   "title": "Heat-set insert tip for the iron",
+   "spec": "Presses the inserts in straight. A spare conical tip works in a pinch.",
+   "shops": [
+     ["CNC Kitchen tips · Printed Solid", "https://www.printedsolid.com/products/cnc-kitchen-heat-insert-tips"],
+     ["ruthex tip set · Amazon", "https://www.amazon.com/dp/B0FCY3QL6Z"]
+   ]
+  },
+  {
+   "id": "tool-meter",
+   "title": "Multimeter",
+   "spec": "For the continuity checks before the first power-on.",
+   "shops": [
+     ["Adafruit 2034", "https://www.adafruit.com/product/2034"],
+     ["Adafruit pocket meter", "https://www.adafruit.com/product/850"]
+   ]
+  },
+  {
+   "id": "tool-calipers",
+   "title": "Digital calipers",
+   "spec": "To check your display module against the case before printing.",
+   "shops": [
+     ["Adafruit 1724", "https://www.adafruit.com/product/1724"]
+   ]
+  },
+  {
+   "id": "tool-drivers",
+   "title": "2 mm hex key and #1 Phillips screwdriver",
+   "spec": "The hex key fits the M3 button heads, the Phillips the M2.5 pan heads.",
+   "shops": []
+  },
+  {
+   "id": "tool-cutters",
+   "title": "Wire strippers and flush cutters",
+   "spec": "For the pigtails at the button and the jack.",
+   "shops": []
+  },
+  {
+   "id": "tool-heat",
+   "title": "Heat gun or lighter",
+   "spec": "Shrinks the heat-shrink tubing.",
+   "shops": []
+  },
+  {
+   "id": "tool-printer",
+   "title": "3D printer, 180 mm build volume or larger",
+   "spec": "Or a print service: the STLs are ready to print, in print orientation.",
+   "shops": []
+  }
+ ]
+}
+</script>
+<script>
+(function () {
+  "use strict";
+
+  // ---------------------------------------------------------------- data
+  // Parts, quantities and optional flags: "bom-data", generated from the BOM.
+  // Names, store links, pack prices and descriptions: "shop-data".
+  var BOM = JSON.parse(document.getElementById("bom-data").textContent);
+  var SHOP = JSON.parse(document.getElementById("shop-data").textContent);
+  var ORDER = BOM.builds;
+  var BUILDS = SHOP.builds;
+  var SECTIONS = [];
+  var PARTS = BOM.parts.map(function (p) {
+    if (SECTIONS.indexOf(p.section) < 0) SECTIONS.push(p.section);
+    var s = SHOP.parts[p.id] || {};
+    var opt = {};
+    p.optional.forEach(function (b) { opt[b] = 1; });
+    return {
+      id: p.id, sec: p.section, name: s.title || p.item, use: p.use, opt: opt, unit: p.unit,
+      bomUsd: p.bomUsd, price: typeof s.price === "number" ? s.price : p.bomUsd,
+      pack: s.pack || "", spec: s.spec || "", shops: s.shops || []
+    };
+  });
+  var TOOLS = SHOP.tools.map(function (t) {
+    return { id: t.id, name: t.title, spec: t.spec, shops: t.shops };
+  });
+
+  // --------------------------------------------------------- 7-segment
+  var SEGS = {
+    a: [18, 5, "h"], b: [31, 18.5, "v"], c: [31, 45.5, "v"], d: [18, 59, "h"],
+    e: [5, 45.5, "v"], f: [5, 18.5, "v"], g: [18, 32, "h"]
+  };
+  var GLYPHS = {
+    "0": "abcdef", "1": "bc", "2": "abdeg", "3": "abcdg", "4": "bcfg", "5": "acdfg",
+    "6": "acdefg", "7": "abc", "8": "abcdefg", "9": "abcdfg", "-": "g", " ": "",
+    "d": "bcdeg", "o": "cdeg", "n": "ceg", "E": "adefg"
+  };
+  function segPoints(cx, cy, kind) {
+    var p = kind === "h"
+      ? [[cx - 12, cy], [cx - 8.5, cy - 3.5], [cx + 8.5, cy - 3.5], [cx + 12, cy], [cx + 8.5, cy + 3.5], [cx - 8.5, cy + 3.5]]
+      : [[cx, cy - 12], [cx + 3.5, cy - 8.5], [cx + 3.5, cy + 8.5], [cx, cy + 12], [cx - 3.5, cy + 8.5], [cx - 3.5, cy - 8.5]];
+    return p.map(function (q) { return q[0] + "," + q[1]; }).join(" ");
+  }
+  function buildLED(el) {
+    var svg = '<svg viewBox="0 0 176 66" aria-hidden="true" focusable="false"><g transform="translate(7 1) skewX(-6)">';
+    for (var i = 0; i < 4; i++) {
+      svg += '<g transform="translate(' + (i * 44) + ' 0)">';
+      Object.keys(SEGS).forEach(function (k) {
+        var s = SEGS[k];
+        svg += '<polygon class="seg" data-d="' + i + '" data-s="' + k + '" points="' + segPoints(s[0], s[1], s[2]) + '"/>';
+      });
+      svg += "</g>";
+    }
+    el.innerHTML = svg + "</g></svg>";
+  }
+  function showLED(el, text, label) {
+    text = String(text);
+    while (text.length < 4) text = " " + text;
+    text = text.slice(-4);
+    var polys = el.querySelectorAll(".seg");
+    for (var j = 0; j < polys.length; j++) {
+      var p = polys[j];
+      var lit = (GLYPHS[text.charAt(+p.getAttribute("data-d"))] || "").indexOf(p.getAttribute("data-s")) >= 0;
+      p.classList.toggle("on", lit);
+    }
+    el.setAttribute("aria-label", label);
+  }
+
+  // ----------------------------------------------------------- helpers
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function money(n) {
+    return "$" + (n % 1 ? n.toFixed(2) : String(n));
+  }
+  function specFor(p, b) { return typeof p.spec === "string" ? p.spec : (p.spec[b] || ""); }
+  function qtyFor(p, b) {
+    var n = p.use[b];
+    return p.unit ? n + " " + p.unit : n + "×";
+  }
+  function inBuild(p, b) { return p.use[b] != null; }
+  function isOpt(p, b) { return !!(p.opt && p.opt[b]); }
+  function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+  function readJSON(key) {
+    try { return JSON.parse(localStorage.getItem(key) || "null"); } catch (e) { return null; }
+  }
+  function writeJSON(key, v) {
+    try { localStorage.setItem(key, JSON.stringify(v)); } catch (e) { /* storage unavailable */ }
+  }
+
+  // ------------------------------------------------------------- state
+  var prefs = readJSON("nn-parts-prefs") || {};
+  var hashBuild = (location.hash || "").replace("#", "");
+  var state = {
+    build: BUILDS[hashBuild] ? hashBuild : (BUILDS[prefs.build] ? prefs.build : null),
+    hideGot: !!prefs.hideGot,
+    showOpt: prefs.showOpt !== false,
+    mode: "loading",          // loading | db | local | readonly
+    ready: false
+  };
+  var chosenByUser = !!state.build;
+  if (!state.build) state.build = "desktop";
+
+  var server = new Set();     // ids ticked in the saved checklist
+  var intent = new Map();     // id -> bool, ticks not yet confirmed by the store
+  var local = new Set();      // ticks when the store is not available
+  var leaving = new Set();    // just-ticked rows that fade before hiding
+  var db = null;
+
+  function has(id) {
+    if (state.mode === "local") return local.has(id);
+    return intent.has(id) ? intent.get(id) : server.has(id);
+  }
+
+  var $ = function (id) { return document.getElementById(id); };
+  var listEl = $("list");
+  var statusEl = $("status");
+  var ledParts = $("led-parts");
+  var ledUsd = $("led-usd");
+
+  function setStatus(kind, text) {
+    statusEl.setAttribute("data-kind", kind);
+    statusEl.textContent = text;
+  }
+  function savePrefs() {
+    writeJSON("nn-parts-prefs", { build: state.build, hideGot: state.hideGot, showOpt: state.showOpt });
+  }
+
+  // ------------------------------------------------------------ render
+  function totals(b) {
+    var t = { req: 0, reqGot: 0, reqUsd: 0, reqLeftUsd: 0, opt: 0, optLeft: 0, optLeftUsd: 0 };
+    PARTS.forEach(function (p) {
+      if (!inBuild(p, b)) return;
+      var got = has(p.id);
+      if (isOpt(p, b)) {
+        t.opt++;
+        if (!got) { t.optLeft++; t.optLeftUsd += p.price; }
+      } else {
+        t.req++; t.reqUsd += p.price;
+        if (got) t.reqGot++; else t.reqLeftUsd += p.price;
+      }
+    });
+    return t;
+  }
+
+  function renderBuilds() {
+    var fs = $("builds");
+    var html = '<legend class="sr">Which build</legend>';
+    ORDER.forEach(function (b) {
+      var B = BUILDS[b];
+      html += '<div class="build"><input type="radio" name="build" id="build-' + b + '" value="' + b + '"' +
+        (b === state.build ? " checked" : "") + '>' +
+        '<label for="build-' + b + '"><span class="build-name">' + esc(B.name) + '</span>' +
+        '<span class="build-line">' + esc(B.line) + '</span>' +
+        '<span class="build-cost" data-cost="' + b + '"></span></label></div>';
+    });
+    fs.innerHTML = html;
+  }
+
+  function rowHTML(p, b, isTool) {
+    var got = has(p.id);
+    var opt = !isTool && isOpt(p, b);
+    var shops = (p.shops || []).map(function (s) {
+      return '<a class="shop" href="' + esc(s[1]) + '" target="_blank" rel="noopener">' + esc(s[0]) + "</a>";
+    }).join("");
+    var price = isTool ? "" :
+      '<div class="price">' + money(p.price) + (p.pack ? '<span class="pack">' + esc(p.pack) + "</span>" : "") + "</div>";
+    return '<div class="row' + (got ? " is-got" : "") + '" data-id="' + p.id + '"' + (opt ? ' data-opt="1"' : "") + ">" +
+      '<input type="checkbox" class="tick" id="t-' + p.id + '" data-id="' + p.id + '"' + (got ? " checked" : "") +
+      (state.ready && state.mode !== "readonly" ? "" : " disabled") + ">" +
+      '<label class="what" for="t-' + p.id + '"><span class="name">' +
+      (isTool ? "" : '<span class="qty">' + esc(qtyFor(p, b)) + "</span>") + esc(p.name) +
+      (opt ? '<span class="badge">Optional</span>' : "") + "</span>" +
+      '<span class="spec">' + esc(isTool ? p.spec : specFor(p, b)) + "</span></label>" +
+      price + (shops ? '<div class="shops">' + shops + "</div>" : "") + "</div>";
+  }
+
+  function renderList() {
+    var b = state.build;
+    var html = "";
+    SECTIONS.forEach(function (sec) {
+      var items = PARTS.filter(function (p) { return p.sec === sec && inBuild(p, b); });
+      if (!items.length) return;
+      html += '<section class="group" data-sec="' + sec + '"><div class="group-head"><h2>' + sec +
+        '</h2><span class="count"></span></div><div class="card">' +
+        items.map(function (p) { return rowHTML(p, b, false); }).join("") + "</div></section>";
+    });
+    html += '<section class="group" data-sec="Tools"><div class="group-head"><h2>Tools</h2>' +
+      '<span class="count"></span></div><div class="card">' +
+      TOOLS.map(function (p) { return rowHTML(p, b, true); }).join("") + "</div></section>";
+    listEl.innerHTML = html;
+    applyState();
+  }
+
+  function applyState() {
+    var b = state.build;
+    var canTick = state.ready && state.mode !== "readonly";
+    var rows = listEl.querySelectorAll(".row");
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      var id = row.getAttribute("data-id");
+      var got = has(id);
+      var box = row.querySelector(".tick");
+      if (box.checked !== got) box.checked = got;
+      box.disabled = !canTick;
+      row.classList.toggle("is-got", got);
+      row.classList.toggle("leaving", got && state.hideGot && leaving.has(id));
+      row.hidden = (state.hideGot && got && !leaving.has(id)) ||
+                   (!state.showOpt && row.getAttribute("data-opt") === "1");
+    }
+    var groups = listEl.querySelectorAll(".group");
+    for (var g = 0; g < groups.length; g++) {
+      var all = groups[g].querySelectorAll(".row");
+      var visible = 0, have = 0, counted = 0;
+      for (var r = 0; r < all.length; r++) {
+        if (!all[r].hidden) visible++;
+        if (!state.showOpt && all[r].getAttribute("data-opt") === "1") continue;
+        counted++;
+        if (has(all[r].getAttribute("data-id"))) have++;
+      }
+      groups[g].hidden = visible === 0;
+      groups[g].querySelector(".count").textContent = state.ready ? have + " / " + counted : "";
+    }
+
+    var t = totals(b);
+    ORDER.forEach(function (k) {
+      var el = document.querySelector('[data-cost="' + k + '"]');
+      if (el) el.textContent = "≈ " + money(Math.round(totals(k).reqUsd)) + " in parts";
+    });
+
+    if (!state.ready) {
+      showLED(ledParts, "----", "Parts to get: loading");
+      showLED(ledUsd, "----", "Dollars to spend: loading");
+      $("summary").textContent = "Loading your checklist…";
+      return;
+    }
+    var left = t.req - t.reqGot;
+    var usd = Math.round(t.reqLeftUsd);
+    showLED(ledParts, left === 0 ? "donE" : left, left === 0 ? "Every part in hand" : "Parts to get: " + left);
+    showLED(ledUsd, usd, "Dollars to spend: about " + usd);
+    var s = "<strong>" + t.reqGot + " of " + t.req + "</strong> parts in hand";
+    s += left === 0 ? ". Everything for the " + BUILDS[b].name.toLowerCase() + " build is here." :
+      ", about <strong>" + money(usd) + "</strong> to go.";
+    if (t.opt && state.showOpt) {
+      s += '<span class="opt-note">' + (t.optLeft === 0 ? "Optional parts: all in hand." :
+        "Optional: " + t.optLeft + " more, about " + money(Math.round(t.optLeftUsd)) + ".") + "</span>";
+    }
+    $("summary").innerHTML = s;
+  }
+
+  // ------------------------------------------------------------ saving
+  var queue = new Map();
+  var working = false;
+
+  function tick(id, value) {
+    if (state.mode === "readonly" || !state.ready) return;
+    if (value && state.hideGot) {
+      leaving.add(id);
+      setTimeout(function () { leaving.delete(id); applyState(); }, 900);
+    }
+    if (state.mode === "local") {
+      if (value) local.add(id); else local.delete(id);
+      writeJSON("nn-parts-got", Array.from(local));
+      applyState();
+      return;
+    }
+    intent.set(id, value);
+    applyState();
+    queue.delete(id);
+    queue.set(id, value);
+    if (!working) work();
+  }
+
+  function goReadOnly() {
+    state.mode = "readonly";
+    intent.clear();
+    queue.clear();
+    setStatus("readonly", "View only");
+    applyState();
+  }
+
+  function writeDoc(id, value) {
+    var ref = db.doc("got/" + id);
+    return ref.set({ got: value, at: Date.now() }).catch(function (e) {
+      if (e && e.code === "unavailable") {
+        return sleep(300 + Math.random() * 700).then(function () {
+          return ref.set({ got: value, at: Date.now() });
+        });
+      }
+      throw e;
+    });
+  }
+
+  async function work() {
+    working = true;
+    setStatus("saving", "Saving…");
+    var failed = false;
+    while (queue.size && state.mode === "db") {
+      var first = queue.entries().next().value;
+      var id = first[0], value = first[1];
+      queue.delete(id);
+      try {
+        await writeDoc(id, value);
+      } catch (e) {
+        var code = e && e.code;
+        if (code === "invalid_argument" || code === "not_granted" || code === "revoked" ||
+            code === "capability_disabled" || code === "capability_removed") {
+          goReadOnly();
+          break;
+        }
+        failed = true;
+        intent.delete(id);
+        applyState();
+      }
+    }
+    working = false;
+    if (state.mode === "db") {
+      if (failed) setStatus("error", "A tick didn't save. Check your connection and tap it again.");
+      else setStatus("saved", "Ticks are saved");
+    }
+  }
+
+  function onSnapshot(snap) {
+    var next = new Set();
+    snap.docs.forEach(function (d) {
+      var v = d.exists ? d.data() : null;
+      if (v && v.got === true) next.add(d.id);
+    });
+    server = next;
+    intent.forEach(function (v, id) {
+      if (!queue.has(id) && server.has(id) === v) intent.delete(id);
+    });
+    var first = !state.ready;
+    state.ready = true;
+    if (first) {
+      if (!working) setStatus("saved", "Ticks are saved");
+      pickBuildFromTicks();
+      renderList();
+    } else {
+      applyState();
+    }
+  }
+
+  function useLocal() {
+    state.mode = "local";
+    (readJSON("nn-parts-got") || []).forEach(function (id) { local.add(id); });
+    state.ready = true;
+    setStatus("local", "Saved in this browser only");
+    $("save-note").textContent = "Your ticks are kept in this browser.";
+    pickBuildFromTicks();
+    renderList();
+  }
+
+  // With no build chosen yet, open the build whose own parts are ticked most.
+  function pickBuildFromTicks() {
+    if (chosenByUser) return;
+    var best = state.build, bestScore = 0;
+    ORDER.forEach(function (b) {
+      var score = 0;
+      PARTS.forEach(function (p) {
+        var shared = ORDER.every(function (k) { return inBuild(p, k); });
+        if (inBuild(p, b) && !shared && has(p.id)) score++;
+      });
+      if (score > bestScore) { bestScore = score; best = b; }
+    });
+    if (best !== state.build) {
+      state.build = best;
+      var radio = $("build-" + best);
+      if (radio) radio.checked = true;
+    }
+  }
+
+  // ------------------------------------------------------------ events
+  listEl.addEventListener("change", function (e) {
+    var t = e.target;
+    if (t.classList && t.classList.contains("tick")) tick(t.getAttribute("data-id"), t.checked);
+  });
+  $("builds").addEventListener("change", function (e) {
+    if (e.target.name !== "build") return;
+    state.build = e.target.value;
+    chosenByUser = true;
+    savePrefs();
+    renderList();
+  });
+  $("hide-got").checked = state.hideGot;
+  $("show-opt").checked = state.showOpt;
+  $("hide-got").addEventListener("change", function (e) {
+    state.hideGot = e.target.checked; leaving.clear(); savePrefs(); applyState();
+  });
+  $("show-opt").addEventListener("change", function (e) {
+    state.showOpt = e.target.checked; savePrefs(); applyState();
+  });
+
+  var resetTimer = null;
+  $("reset").addEventListener("click", function () {
+    var btn = $("reset");
+    if (!state.ready || state.mode === "readonly") return;
+    var ticked = PARTS.concat(TOOLS).filter(function (p) { return has(p.id); });
+    if (!ticked.length) { btn.textContent = "Nothing to clear"; setTimeout(function () { btn.textContent = "Clear all ticks"; }, 1800); return; }
+    if (btn.getAttribute("data-confirm") !== "1") {
+      btn.setAttribute("data-confirm", "1");
+      btn.textContent = "Clear " + ticked.length + " ticks? Tap again";
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(function () {
+        btn.removeAttribute("data-confirm"); btn.textContent = "Clear all ticks";
+      }, 4000);
+      return;
+    }
+    clearTimeout(resetTimer);
+    btn.removeAttribute("data-confirm");
+    btn.textContent = "Clear all ticks";
+    ticked.forEach(function (p) { tick(p.id, false); });
+  });
+
+  $("copy").addEventListener("click", function () {
+    var b = state.build;
+    var lines = ["Nashville Numbers, " + BUILDS[b].name.toLowerCase() + " build: still to get", ""];
+    PARTS.forEach(function (p) {
+      if (!inBuild(p, b) || has(p.id)) return;
+      if (!state.showOpt && isOpt(p, b)) return;
+      lines.push("[ ] " + qtyFor(p, b) + " " + p.name + (isOpt(p, b) ? " (optional)" : "") +
+        " - about " + money(p.price) + (p.pack ? ", " + p.pack : ""));
+      if (p.shops && p.shops[0]) lines.push("    " + p.shops[0][1]);
+    });
+    if (lines.length === 2) lines.push("Everything is in hand.");
+    var text = lines.join("\n");
+    var box = $("copybox");
+    var btn = $("copy");
+    function fallback() {
+      box.value = text; box.hidden = false; box.focus(); box.select();
+      btn.textContent = "Select the list below and copy it";
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function () {
+        box.hidden = true;
+        btn.textContent = "Copied";
+        setTimeout(function () { btn.textContent = "Copy what's left"; }, 1800);
+      }, fallback);
+    } catch (e) { fallback(); }
+  });
+
+  // -------------------------------------------------------------- boot
+  $("bom-totals").textContent = ORDER.map(function (b) {
+    var t = 0;
+    PARTS.forEach(function (p) { if (inBuild(p, b) && !isOpt(p, b)) t += p.bomUsd * p.use[b]; });
+    return BUILDS[b].name + " " + money(Math.round(t));
+  }).join(", ");
+  buildLED(ledParts);
+  buildLED(ledUsd);
+  renderBuilds();
+  renderList();
+
+  var claude = window.claude;
+  if (!claude || typeof claude.use !== "function") {
+    useLocal();
+  } else {
+    claude.use("db").then(function (ns) {
+      if (!ns) { useLocal(); return; }
+      db = ns;
+      state.mode = "db";
+      $("save-note").textContent = "Ticks are saved with this page, so your phone at the store and your bench show the same list.";
+      setStatus("loading", "Loading…");
+      setTimeout(function () {
+        if (!state.ready && state.mode === "db") setStatus("error", "Can't reach your saved ticks yet. Reload to try again.");
+      }, 12000);
+      db.collection("got").onSnapshot(onSnapshot, function (e) {
+        if (e && (e.code === "revoked" || e.code === "not_granted")) { goReadOnly(); return; }
+        setStatus("error", "Lost the connection to your checklist. Reload to reconnect.");
+      });
+    }, function () { useLocal(); });
+  }
+})();
+</script>
+</body>
+</html>
