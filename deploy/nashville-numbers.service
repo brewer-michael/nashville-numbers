@@ -1,0 +1,20 @@
+# Installed by deploy/install.sh, which fills in the @...@ placeholders.
+[Unit]
+Description=Nashville Numbers - live chords as Nashville numbers
+After=sound.target local-fs.target
+Wants=sound.target
+
+[Service]
+Type=simple
+User=@USER@
+SupplementaryGroups=audio gpio i2c spi
+WorkingDirectory=@REPO@
+ExecStart=@REPO@/.venv/bin/nashville-numbers --config @CONFIG@
+Environment=PYTHONUNBUFFERED=1
+# A little extra priority keeps the analysis on time on busy systems.
+Nice=-5
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

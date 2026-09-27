@@ -1,0 +1,4 @@
+{
+    "audio": {"device": "USB"},
+    "display": {"type": "tm1637", "tm1637": {"clk_pin": 23, "dio_pin": 24, "brightness": 7}}
+}

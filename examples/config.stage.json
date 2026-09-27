@@ -1,0 +1,5 @@
+{
+    "audio": {"device": "USB"},
+    "display": {"type": "ht16k33", "ht16k33": {"address": "0x70", "brightness": 15}},
+    "key": {"silence_reset_seconds": 0}
+}

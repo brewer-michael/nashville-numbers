@@ -1,23 +1,4 @@
-"""
-Nashville Numbers - Real-Time Chord Detection and Display System
+"""Nashville Numbers - real-time chord and key detection that shows chords as
+Nashville numbers on an LCD or LED display."""
 
-A library for detecting musical chords in real-time and displaying them
-using the Nashville Number System on various display types.
-"""
-
-__version__ = "1.0.0"
-__author__ = "Nashville Numbers Project"
-
-from .chord_detection.detector import ChordDetector
-from .chord_detection.key_detector import KeyDetector
-from .chord_detection.nashville import NashvilleConverter
-from .displays.lcd_display import LCDDisplay
-from .displays.led_display import LEDDisplay
-
-__all__ = [
-    'ChordDetector',
-    'KeyDetector',
-    'NashvilleConverter',
-    'LCDDisplay',
-    'LEDDisplay',
-]
+__version__ = "2.0.0"
