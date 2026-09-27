@@ -21,6 +21,19 @@ theirs, and 1 GB is plenty (the app uses about 60 MB).
 The CSV files are the full lists for ordering. The tables below are the same
 lists in short form.
 
+## Shopping checklist
+
+[`checklist.html`](checklist.html) is the same parts list as a page to shop
+from: pick your build, follow the links to real store listings, and tick
+each part off as you get it. Open it in a browser from a clone (GitHub shows
+its source, not the page); your ticks are kept in that browser. It also lists
+the tools you need.
+
+Its prices are what each listing costs, and small parts only come in packs,
+so a first build costs more there than in the tables below (the Desktop build
+is about $212 to buy against $131 per unit). The difference is spares, and
+it shrinks as you tick off things you already own.
+
 ## Desktop
 
 <!-- BEGIN GENERATED: desktop parts -->
@@ -151,7 +164,8 @@ A 0.36-inch TM1637 module works too, with its own shell
 
 ## Regenerating
 
-The CSVs and the tables above are generated from one parts table:
+The CSVs, the tables above and the parts data in `checklist.html` are
+generated from one parts table:
 
 ```bash
 python3 hardware/bom/tools/build_bom.py           # rewrite the files
@@ -159,4 +173,6 @@ python3 hardware/bom/tools/build_bom.py --check   # CI: fail if they are stale
 ```
 
 Change quantities, parts or prices in `tools/build_bom.py`, not in the
-generated files.
+generated files. Store links, pack prices and the shopping descriptions are
+in the `shop-data` block of `checklist.html`; edit them there. Every part
+needs an entry there, keyed by its id in the parts table, or `--check` fails.

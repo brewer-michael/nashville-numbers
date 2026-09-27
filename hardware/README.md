@@ -5,7 +5,7 @@ Everything needed to build a Nashville Numbers unit.
 | | |
 |---|---|
 | [`SPEC.md`](SPEC.md) | design spec: parts, pin map, electrical rules, mechanical rules - the single source of truth |
-| [`bom/`](bom/README.md) | bills of materials per build, with quantities and approximate prices |
+| [`bom/`](bom/README.md) | bills of materials per build, with quantities and approximate prices, and a shopping checklist with store links |
 | [`wiring/`](wiring/README.md) | wiring diagrams, pin-by-pin tables, soldering and bring-up tests |
 | [`enclosures/`](enclosures/README.md) | 3D-printable enclosures (OpenSCAD source, ready STLs, print and assembly guide) |
 
