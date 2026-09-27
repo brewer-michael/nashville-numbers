@@ -90,7 +90,7 @@
 <text text-anchor="start" x="807" y="-241.4" font-family="Arial" font-size="12.00"> (1 GB+)</text>
 <text text-anchor="start" x="715" y="-229.4" font-family="Arial" font-size="12.00">or </text>
 <text text-anchor="start" x="729" y="-229.4" font-family="Arial" font-weight="bold" font-size="12.00">Raspberry Pi 4</text>
-<text text-anchor="start" x="814" y="-229.4" font-family="Arial" font-size="12.00"> (2 GB+)</text>
+<text text-anchor="start" x="814" y="-229.4" font-family="Arial" font-size="12.00"> (1 GB+)</text>
 <text text-anchor="start" x="696" y="-219" font-family="Arial" font-size="10.00">chord + key detection, Nashville numbers</text>
 <text text-anchor="start" x="687" y="-209" font-family="Arial" font-size="10.00">40&#45;pin header: I2C1, SPI0, GPIO (3.3 V logic)</text>
 <text text-anchor="start" x="752" y="-199" font-family="Arial" font-size="10.00">gpiozero + lgpio</text>

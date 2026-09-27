@@ -32,7 +32,7 @@ digraph nashville_numbers_system {
           label=<<b>Power budget (SPEC §3.6)</b><br align="left"/>Pi 5 running the app: 0.6 to 1.0 A<br align="left"/>Pi 4 running the app: 0.6 to 0.9 A<br align="left"/>USB audio interface: 0.1 to 0.5 A<br align="left"/>display: 0.03 A (LCD) to 0.3 A (MAX7219)<br align="left"/>>];
 
   // --------------------------------------------------------------- computer
-  pi [label=<<b>Raspberry Pi 5</b> (1 GB+)<br/>or <b>Raspberry Pi 4</b> (2 GB+)<br/><font point-size="10">chord + key detection, Nashville numbers<br/>40-pin header: I2C1, SPI0, GPIO (3.3 V logic)<br/>gpiozero + lgpio</font>>,
+  pi [label=<<b>Raspberry Pi 5</b> (1 GB+)<br/>or <b>Raspberry Pi 4</b> (1 GB+)<br/><font point-size="10">chord + key detection, Nashville numbers<br/>40-pin header: I2C1, SPI0, GPIO (3.3 V logic)<br/>gpiozero + lgpio</font>>,
       fillcolor="#d3f9d8", color="#2b8a3e", penwidth=2];
 
   // --------------------------------------------------------------- displays
