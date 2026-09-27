@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  software:
+    name: Tests (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.9 = Raspberry Pi OS Bullseye, 3.11 = Bookworm, 3.13 = Trixie
+        python: ["3.9", "3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Lint
+        run: ruff check .
+      - name: Test
+        run: pytest -q
+
+  hardware-docs:
+    name: Wiring diagrams and BOM are up to date
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install wireviz==0.4.1
+      - name: Wiring diagrams match the spec
+        run: python hardware/wiring/tools/check_wiring.py
+      - name: BOM files match the parts table
+        run: python hardware/bom/tools/build_bom.py --check
+
+  cad:
+    name: Enclosures render and pass fit checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install OpenSCAD
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openscad
+      - run: pip install numpy scipy trimesh manifold3d
+      - run: python hardware/enclosures/tools/check_cad.py

@@ -40,8 +40,10 @@ addopts = "-p no:cacheprovider"
 [tool.ruff]
 line-length = 100
 target-version = "py39"
-extend-exclude = ["hardware"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "B"]
 ignore = ["B905"]
+
+[tool.ruff.lint.per-file-ignores]
+"hardware/wiring/tools/*" = ["E501"]   # colour and connection tables

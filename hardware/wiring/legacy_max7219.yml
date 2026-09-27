@@ -1,0 +1,190 @@
+# Nashville Numbers v2 - Legacy build: MAX7219 8-digit module via 74AHCT125 buffer (SPI0)
+#
+# WireViz 0.4.1 harness.  Source of truth: hardware/SPEC.md sections 3.1, 3.4, 3.5
+# (3.4: C2 100 nF across U1 pins 14 and 7).
+# Rendered and checked by tools/build.sh (tools/check_wiring.py compares every
+# wire below with tools/wiring_data.py).  Pin numbers are physical header pins,
+# GPIO numbers are BCM.  Wire colours: see README.md "Wire colour scheme".
+#
+# Physical build: the 74AHCT125 (U1) sits on a half-size breadboard, straddling
+# the centre channel.  Jumpers are M-F: female on the Pi / MAX7219 pins, male
+# into the breadboard hole next to the named U1 pin ("U1 pin 14 row" etc.).
+
+metadata:
+  title: Nashville Numbers v2 - Legacy build (MAX7219 via 74AHCT125)
+
+options:
+  color_mode: full
+
+tweak:
+  append:
+    - 'graph [ranksep="1.0"]'
+    - 'labelloc="t"'
+    - 'labeljust="l"'
+    - 'fontsize="22"'
+    - 'label=<<b>Legacy build: MAX7219 8-digit module via 74AHCT125 buffer on a breadboard (SPI0), panel button</b><br align="left"/><font point-size="13">Raspberry Pi 5 / Pi 4. Physical header pin numbers, BCM GPIO names. Power off before wiring. Source: hardware/SPEC.md §3.1, §3.4, §3.5</font><br align="left"/><font point-size="13">Wire colours: red 5 V · black GND · grey SPI MOSI to DIN · violet (purple) SPI SCLK to CLK · brown SPI CE0 to CS · green panel button (GPIO17)</font><br align="left"/><font point-size="13">C2 (100 nF) decouples U1: its legs go straight into the breadboard rows of U1 pins 14 and 7 (dashed lines = no wire).</font><br align="left"/><font point-size="13" color="#c92a2a"><b>The MAX7219 needs 3.5 V logic-high: its DIN, CS and CLK connect only to U1 outputs, never to the Pi.</b></font><br align="left"/>>'
+
+connectors:
+  PI:
+    type: Raspberry Pi 5 / Pi 4, 40-pin GPIO header
+    subtype: 2x20 male, 2.54 mm
+    pincount: 40
+    pinlabels: [3V3, 5V, GPIO2 SDA, 5V, GPIO3 SCL, GND, GPIO4, GPIO14 TXD, GND, GPIO15 RXD,
+                GPIO17, GPIO18, GPIO27, GND, GPIO22, GPIO23, 3V3, GPIO24, GPIO10 MOSI, GND,
+                GPIO9 MISO, GPIO25, GPIO11 SCLK, GPIO8 CE0, GND, GPIO7 CE1, GPIO0 ID_SD, GPIO1 ID_SC, GPIO5, GND,
+                GPIO6, GPIO12, GPIO13, GND, GPIO19, GPIO16, GPIO26, GPIO20, GND, GPIO21]
+    hide_disconnected_pins: true
+    ignore_in_bom: true
+    notes: |-
+      Pin 1 = square pad, microSD-card end.
+      Only the pins used by this build are shown.
+  U1:
+    type: 74AHCT125 quad buffer, DIP-14
+    subtype: on a half-size breadboard
+    pinlabels: [1OE, 1A, 1Y, 2OE, 2A, 2Y, GND, 3Y, 3A, 3OE, 4Y, 4A, 4OE, VCC]
+    show_pincount: false
+    ignore_in_bom: true
+    notes: |-
+      Powered from 5 V; TTL inputs accept 3.3 V logic.
+      All four OE (active low) and the unused 4A tied to GND.
+      Pin 11 (4Y) stays unconnected.
+  C2:
+    type: Capacitor 100 nF, ceramic
+    subtype: decoupling for U1 (SPEC.md 3.4)
+    pins: [1, 2]
+    pinlabels: [leg in U1 pin 7 (GND) row, leg in U1 pin 14 (VCC) row]
+    show_pincount: false
+    ignore_in_bom: true
+    notes: Legs bent over the chip; keep them short.
+  RAIL:
+    style: simple
+    show_name: true
+    type: Breadboard GND (−) rail
+    ignore_in_bom: true
+  MAX7219:
+    type: MAX7219 8-digit 7-segment module
+    subtype: input header
+    pinlabels: [VCC, GND, DIN, CS, CLK]
+    show_pincount: false
+    notes: |-
+      5 V part, logic-high threshold 3.5 V.
+      Output header (DOUT) stays unconnected.
+  BUTTON:
+    type: Panel button, 16 mm momentary, normally open
+    subtype: solder lugs or screw terminals
+    pins: [C, 'NO']
+    pinlabels: [common, normally open]
+    show_pincount: false
+    notes: 2-lug switch - either way round. 3-lug switch - use C and NO, leave NC free.
+
+cables:
+  W1:
+    category: bundle
+    type: Dupont jumper M-F
+    gauge: 26 AWG
+    length: 0.2
+    colors: [RD, BK, GY, VT, BN]
+    ignore_in_bom: true
+    notes: F on the Pi, M into the breadboard row of the U1 pin
+  W2:
+    category: bundle
+    type: Dupont jumper M-F
+    gauge: 26 AWG
+    length: 0.2
+    colors: [RD, BK, GY, BN, VT]
+    ignore_in_bom: true
+    notes: M into the breadboard row of the U1 pin, F on the MAX7219
+  L1:
+    category: bundle
+    type: Breadboard link, 22 AWG solid core
+    colors: [BK, BK, BK, BK, BK, BK]
+    ignore_in_bom: true
+    notes: |-
+      All six links to the same GND rail
+      (pins 10, 12, 13 hop over the chip).
+  W3:
+    category: bundle
+    type: Dupont jumper F-F, far housing cut off
+    gauge: 26 AWG
+    length: 0.2
+    colors: [BK, GN]
+    ignore_in_bom: true
+    notes: |-
+      Female housing on the Pi. Button end: strip 5 mm,
+      solder to the lug under 4.8 mm heat-shrink, or clamp in the screw terminal.
+
+connections:
+  -
+    - PI: [2, 6, 19, 23, 24]
+    - W1: [1-5]
+    - U1: [14, 7, 2, 5, 9]
+  -
+    - U1: [14, 7, 3, 8, 6]
+    - W2: [1-5]
+    - MAX7219: [VCC, GND, DIN, CS, CLK]
+  -
+    - U1: [1, 4, 7, 10, 12, 13]
+    - L1: [1-6]
+    - RAIL
+  -
+    - U1: [7, 14]
+    - --
+    - C2: [1, 2]
+  -
+    - PI: [9, 11]
+    - W3: [1-2]
+    - BUTTON: [C, 'NO']
+
+additional_bom_items:
+  - description: Dupont jumper wire M-F 2.54 mm, 20 cm, black
+    qty: 2
+    unit: pcs
+    designators: [W1, W2]
+  - description: Dupont jumper wire M-F 2.54 mm, 20 cm, brown
+    qty: 2
+    unit: pcs
+    designators: [W1, W2]
+  - description: Dupont jumper wire M-F 2.54 mm, 20 cm, grey
+    qty: 2
+    unit: pcs
+    designators: [W1, W2]
+  - description: Dupont jumper wire M-F 2.54 mm, 20 cm, purple
+    qty: 2
+    unit: pcs
+    designators: [W1, W2]
+  - description: Dupont jumper wire M-F 2.54 mm, 20 cm, red
+    qty: 2
+    unit: pcs
+    designators: [W1, W2]
+  - description: Dupont jumper wire F-F 2.54 mm, 20 cm, black
+    qty: 1
+    unit: pcs
+    designators: [W3]
+  - description: Dupont jumper wire F-F 2.54 mm, 20 cm, green
+    qty: 1
+    unit: pcs
+    designators: [W3]
+  - description: Breadboard link wire, 22 AWG solid core, black
+    qty: 6
+    unit: pcs
+    designators: [L1]
+  - description: IC 74AHCT125 quad bus buffer, 3-state, DIP-14 (e.g. TI SN74AHCT125N)
+    qty: 1
+    unit: pcs
+    designators: [U1]
+  - description: Capacitor 100 nF (marked 104), ceramic X7R, 50 V or more, through-hole (radial MLCC or disc)
+    qty: 1
+    unit: pcs
+    designators: [C2]
+  - description: Breadboard, half size (400 tie points), with power rails
+    qty: 1
+    unit: pcs
+    designators: [RAIL, U1]
+  - description: Heat-shrink tube 4.8 mm (3/16 in) 2:1, 15 mm piece (button lugs; not needed for screw terminals)
+    qty: 2
+    unit: pcs
+    designators: [BUTTON]
+  - description: Solder wire, rosin core, 0.8 mm (button lugs)
+    qty: 0.1
+    unit: m
+    designators: [BUTTON]

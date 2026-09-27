@@ -1,470 +1,223 @@
-# Nashville Numbers - 3D Printed Enclosures
-
-Professional enclosures for your Nashville Numbers system. All designs are OpenSCAD parametric models that can be customized and 3D printed.
-
-## Table of Contents
-
-1. [Enclosure Options](#enclosure-options)
-2. [Printing Guide](#printing-guide)
-3. [Assembly Instructions](#assembly-instructions)
-4. [Bill of Materials](#bill-of-materials)
-5. [Customization](#customization)
-
-## Enclosure Options
-
-### 1. Raspberry Pi + LCD Case (`raspberry_pi_lcd_case.scad`)
-
-**Best for:** Desktop use, practice rooms, detailed monitoring
-
-**Features:**
-- Houses Raspberry Pi 3B+/4 with mounted LCD display
-- Top-mounted 16x2 LCD window
-- Full access to all Raspberry Pi ports
-- Ventilation holes for cooling
-- Two-part design (base + lid)
-- Professional appearance
-
-**Dimensions:** 101mm × 68mm × 40mm (L×W×H)
-
-**Print time:** ~8 hours (both parts)
-
-**Material needed:** ~80g PLA/PETG
-
-![LCD Case Preview](https://via.placeholder.com/400x300?text=LCD+Case)
-
----
-
-### 2. Stage LED Display Case (`stage_led_case.scad`)
-
-**Best for:** Stage performance, floor mounting, high visibility
-
-**Features:**
-- 30° viewing angle optimized for floor placement
-- Large LED digit window
-- Rugged construction for stage use
-- Cable strain relief
-- Rubber feet mounting points
-- Optional red acrylic filter
-
-**Dimensions:**
-- TM1637: 62mm × 37mm × 45mm (front height)
-- MAX7219: 148mm × 45mm × 45mm
-
-**Print time:** ~4-6 hours
-
-**Material needed:** ~60g PETG
-
-![Stage Case Preview](https://via.placeholder.com/400x300?text=Stage+LED+Case)
-
----
-
-### 3. Compact All-in-One Case (`compact_allinone_case.scad`)
-
-**Best for:** Pedalboard mounting, minimal desk space, portable setups
-
-**Features:**
-- Vertical orientation saves space
-- Raspberry Pi and LED display in one unit
-- Front-facing LED display
-- Passive chimney-effect cooling
-- VESA mount compatible
-- Pedalboard-ready
-
-**Dimensions:** 93mm × 64mm × 80mm
-
-**Print time:** ~7 hours
-
-**Material needed:** ~110g PLA/PETG
-
-![Compact Case Preview](https://via.placeholder.com/400x300?text=Compact+All-in-One)
-
----
-
-### 4. Mounting Accessories (`mounting_accessories.scad`)
-
-**Includes:**
-- **Microphone Stand Mount** - Attach to standard mic stand
-- **Desktop Stand** - 15° angled stand for optimal viewing
-- **Cable Clips** - Organize wires (various sizes)
-- **VESA Adapter** - 75mm mount for monitor arms/walls
-- **Pedalboard Mount** - Low-profile velcro mount
-
-## Printing Guide
-
-### Software Requirements
-
-1. **OpenSCAD** (Free, open-source)
-   - Download: [openscad.org](https://openscad.org/)
-   - Used to customize and export models
-
-2. **Slicer Software**
-   - Cura, PrusaSlicer, or your preferred slicer
-   - Converts STL to G-code for your printer
-
-### Recommended Print Settings
-
-#### General Settings
-
-| Setting | Value | Notes |
-|---------|-------|-------|
-| Layer Height | 0.2mm | Good balance of quality/speed |
-| Wall Thickness | 1.2mm | 3 walls minimum |
-| Infill | 20-30% | Higher for stage cases |
-| Supports | Case dependent | See per-model notes |
-| Bed Adhesion | Brim recommended | Especially for larger parts |
-
-#### Material Selection
-
-**PLA**
-- ✓ Easy to print
-- ✓ Good for indoor/desktop use
-- ✓ Lower cost
-- ✗ Not heat resistant
-- ✗ Less durable
-
-**PETG**
-- ✓ More durable
-- ✓ Better for stage use
-- ✓ Temperature resistant
-- ✓ Slightly flexible
-- ✗ Needs higher temps
-- ✗ Strings more
-
-**TPU** (for specific parts)
-- Rubber feet
-- Anti-vibration mounts
-- Cable grommets
-
-### Per-Model Print Instructions
-
-#### Raspberry Pi + LCD Case
-
-**Base:**
-- Supports: None needed
-- Orientation: Print as shown
-- Print time: ~5 hours
-- Notes: Print walls first for better strength
-
-**Lid:**
-- Supports: Yes (for LCD standoffs)
-- Orientation: Upside down (as shown in model)
-- Print time: ~3 hours
-- Notes: Support only needed under standoffs
-
-#### Stage LED Case
-
-- Supports: Tree supports under angled face
-- Orientation: As shown (angled back)
-- Print time: ~4-6 hours
-- Material: PETG recommended for durability
-- Notes: Use 3+ walls for impact resistance
-
-#### Compact All-in-One
-
-**Body:**
-- Supports: None needed
-- Orientation: Print as shown
-- Print time: ~5 hours
-
-**Front Panel:**
-- Supports: Yes (for LED standoffs)
-- Orientation: Face down
-- Print time: ~1.5 hours
-
-**Back Panel:**
-- Supports: None
-- Orientation: Face down
-- Print time: ~1 hour
-
-### Exporting for Printing
-
-1. Open model in OpenSCAD
-2. Set configuration variables at top of file
-3. Press F5 to preview
-4. Press F6 to render (may take time)
-5. Export as STL: File → Export → Export as STL
-6. Import STL into your slicer
-7. Apply settings and generate G-code
-
-## Assembly Instructions
-
-### Raspberry Pi + LCD Case
-
-**Required Hardware:**
-- 4× M2.5 × 8mm screws (Pi mounting)
-- 4× M2.5 × 6mm screws (LCD mounting)
-- 4× M2 × 8mm screws (lid attachment)
-- Raspberry Pi 3B+ or 4
-- 16×2 LCD with I2C backpack
-
-**Assembly Steps:**
-
-1. **Mount Raspberry Pi to Base**
-   - Place Pi on standoffs in base
-   - Align mounting holes
-   - Secure with M2.5 × 8mm screws
-   - Route cables through side openings
-
-2. **Wire LCD to Pi**
-   - Connect I2C wires (VCC, GND, SDA, SCL)
-   - Route wires neatly inside case
-   - Test connections before final assembly
-
-3. **Mount LCD to Lid**
-   - Place LCD on standoffs (printed into lid)
-   - Align screen with window
-   - Secure with M2.5 × 6mm screws from inside
-
-4. **Attach Lid**
-   - Place lid on case (lip fits into base)
-   - Align screw holes with corner posts
-   - Secure with 4× M2 × 8mm screws
-
-5. **Final Check**
-   - Verify all ports accessible
-   - Test power-on
-   - Check display visibility
-
-**Total assembly time:** ~15 minutes
-
----
-
-### Stage LED Display Case
-
-**Required Hardware:**
-- 4× M2.5 × 8mm screws (LED mounting)
-- 4× Rubber feet (adhesive or screw-mount)
-- TM1637 or MAX7219 LED module
-- 1× Zip tie (cable strain relief)
-- Optional: 2mm red acrylic sheet for filter
-
-**Assembly Steps:**
-
-1. **Prepare Display Module**
-   - Test LED module before installation
-   - Pre-solder wires if needed
-   - Heat-shrink or tape connections
-
-2. **Mount LED Module**
-   - Place module on angled platform
-   - Route wires through platform hole
-   - Secure with M2.5 × 8mm screws
-
-3. **Cable Management**
-   - Feed cable through back hole
-   - Use zip tie at strain relief point
-   - Trim excess zip tie
-
-4. **Install Rubber Feet**
-   - Clean bottom of case
-   - Apply adhesive rubber feet to corners
-   - Or screw-mount feet into pre-drilled holes
-   - Press firmly for 30 seconds
-
-5. **Optional: Install Red Filter**
-   - Cut 2mm red acrylic using filter template
-   - Test fit in window recess
-   - Glue from inside with clear adhesive
-   - Let cure 24 hours
-
-**Total assembly time:** ~10 minutes
-
----
-
-### Compact All-in-One Case
-
-**Required Hardware:**
-- 4× M2.5 × 10mm screws (Pi mounting - vertical)
-- 4× M2.5 × 8mm screws (LED mounting)
-- 4× M2 × 8mm screws (back panel)
-- Raspberry Pi Zero W/2W, or Pi 3A+ (compact)
-- TM1637 LED module
-
-**Assembly Steps:**
-
-1. **Mount Raspberry Pi Vertically**
-   - Align Pi with vertical mounting pillars
-   - Note orientation: USB ports face right
-   - Secure with M2.5 × 10mm screws
-   - Route power/audio cables down
-
-2. **Mount LED to Front Panel**
-   - Place LED on front panel standoffs
-   - Align digits with window
-   - Secure with M2.5 × 8mm screws
-   - Wire to Pi GPIO pins
-
-3. **Wire Connections**
-   - Connect LED to Pi GPIO
-   - Connect USB audio (if used)
-   - Keep wires neat and short
-   - Use zip ties if needed
-
-4. **Install Front Panel**
-   - Align front panel lip with body
-   - Press firmly until clips engage
-   - Check LED visibility through window
-
-5. **Attach Back Panel**
-   - Route remaining cables
-   - Place back panel on body
-   - Secure with 4× M2 × 8mm screws
-
-6. **Add Mounting Method**
-   - Adhesive velcro for pedalboard
-   - VESA adapter for monitor arm
-   - Rubber feet for desktop
-
-**Total assembly time:** ~20 minutes
-
-## Bill of Materials
-
-### For Raspberry Pi + LCD Case
-
-| Item | Quantity | Source | Cost (USD) |
-|------|----------|--------|------------|
-| 3D printed base | 1 | Self-print | ~$2 |
-| 3D printed lid | 1 | Self-print | ~$1 |
-| M2.5 × 8mm screws | 8 | Hardware store | $1 |
-| M2 × 8mm screws | 4 | Hardware store | $0.50 |
-| Raspberry Pi 4 (2GB) | 1 | Adafruit/Amazon | $45 |
-| 16×2 LCD I2C | 1 | Amazon | $10 |
-| USB Audio Interface | 1 | Amazon | $30 |
-| microSD Card (16GB) | 1 | Amazon | $8 |
-| Power Supply (5V 3A) | 1 | Adafruit | $8 |
-| **Total** | | | **~$105** |
-
-### For Stage LED Case
-
-| Item | Quantity | Source | Cost (USD) |
-|------|----------|--------|------------|
-| 3D printed case | 1 | Self-print | ~$2 |
-| TM1637 LED display | 1 | Amazon/AliExpress | $5 |
-| Rubber feet (adhesive) | 4 | Hardware store | $2 |
-| M2.5 × 8mm screws | 4 | Hardware store | $0.50 |
-| Zip ties | 2 | Hardware store | $0.25 |
-| Red acrylic (optional) | 1 sheet | Craft store | $3 |
-| **Total** | | | **~$13** |
-
-### For Compact All-in-One
-
-| Item | Quantity | Source | Cost (USD) |
-|------|----------|--------|------------|
-| 3D printed body | 1 | Self-print | ~$3 |
-| 3D printed panels | 2 | Self-print | ~$0.50 |
-| Raspberry Pi Zero 2 W | 1 | Adafruit | $15 |
-| TM1637 LED | 1 | Amazon | $5 |
-| M2.5 × 10mm screws | 4 | Hardware store | $0.50 |
-| M2.5 × 8mm screws | 4 | Hardware store | $0.50 |
-| M2 × 8mm screws | 4 | Hardware store | $0.50 |
-| USB Mini Microphone | 1 | Amazon | $15 |
-| microSD Card (16GB) | 1 | Amazon | $8 |
-| USB Power adapter | 1 | Amazon | $6 |
-| **Total** | | | **~$54** |
-
-## Customization
-
-All OpenSCAD models are parametric and can be customized.
-
-### Common Modifications
-
-#### Change Case Dimensions
-
-Edit these variables at the top of the file:
-
-```openscad
-// Example: Make case 10mm longer
-case_length = pi_length + wall * 2 + 20;  // Was + 10
+# Enclosures
+
+Two 3D-printable enclosures, both a sloped wedge around a Raspberry Pi 5 or
+Pi 4:
+
+| | Desktop LCD case | Floor wedge |
+|---|---|---|
+| Builds | Desktop | Stage, Budget |
+| Display | 16x2 LCD with I2C backpack | Adafruit 1.2" 7-segment (HT16K33), or a 0.56" / 0.36" TM1637 module, behind a red filter |
+| Controls | 16 mm button (right side) | 16 mm button (face), 1/4" footswitch jack (back) |
+| Outside | 125 x 82 mm, 38 to 85 mm tall, face at 30° | 142 x 108 mm, 42 to 92 mm tall, face at 25° |
+| Source | [`desktop_lcd_case.scad`](desktop_lcd_case.scad) | [`stage_wedge.scad`](stage_wedge.scad) |
+
+<p align="center">
+  <img src="renders/desktop_lcd_case-assembly.png" width="49%" alt="Desktop LCD case">
+  <img src="renders/stage_wedge-assembly.png" width="49%" alt="Floor wedge with the 1.2-inch display">
+</p>
+
+Each case is a **shell** (walls and face in one piece) and a flat **base
+plate** that carries the Pi. The display is held against the inside of the
+face by small **clamp tabs**, so it does not matter where your module's own
+mounting holes are. Three M3 screws go up through the base into heat-set
+inserts in the shell. The Pi's ports come out through notches in the left
+and back walls.
+
+All parts print without supports on a 180 x 180 mm bed. CI checks every
+change: each part must be a single watertight body that fits the printer,
+and nothing may collide with a Pi 4 or Pi 5 (with the Active Cooler, plugs
+in every port and jumpers on the GPIO header), the display and its wiring,
+the button, the jack or the other printed parts.
+
+## Files to print
+
+All STLs are already in their print orientation: import them and slice.
+
+| Build | Shell | Base | Clamp tabs | Red filter (cut) |
+|---|---|---|---|---|
+| Desktop | [`desktop_lcd_case-shell.stl`](stl/desktop_lcd_case-shell.stl) | [`desktop_lcd_case-base.stl`](stl/desktop_lcd_case-base.stl) | [`desktop_lcd_case-clamps.stl`](stl/desktop_lcd_case-clamps.stl) (3) | - |
+| Stage, Adafruit 1.2" | [`stage_wedge-ht16k33_12-shell.stl`](stl/stage_wedge-ht16k33_12-shell.stl) | [`stage_wedge-base.stl`](stl/stage_wedge-base.stl) | [`stage_wedge-ht16k33_12-clamps.stl`](stl/stage_wedge-ht16k33_12-clamps.stl) (4) | 116 x 46 mm: [DXF](cut/stage_wedge-ht16k33_12-filter.dxf), [SVG](cut/stage_wedge-ht16k33_12-filter.svg) |
+| Budget, TM1637 0.56" | [`stage_wedge-tm1637_056-shell.stl`](stl/stage_wedge-tm1637_056-shell.stl) | [`stage_wedge-base.stl`](stl/stage_wedge-base.stl) | [`stage_wedge-tm1637_056-clamps.stl`](stl/stage_wedge-tm1637_056-clamps.stl) (2) | 54 x 23 mm: [DXF](cut/stage_wedge-tm1637_056-filter.dxf), [SVG](cut/stage_wedge-tm1637_056-filter.svg) |
+| Budget, TM1637 0.36" | [`stage_wedge-tm1637_036-shell.stl`](stl/stage_wedge-tm1637_036-shell.stl) | [`stage_wedge-base.stl`](stl/stage_wedge-base.stl) | [`stage_wedge-tm1637_036-clamps.stl`](stl/stage_wedge-tm1637_036-clamps.stl) (2) | 35 x 19 mm: [DXF](cut/stage_wedge-tm1637_036-filter.dxf), [SVG](cut/stage_wedge-tm1637_036-filter.svg) |
+
+Check your display module against the case before you print
+([below](#check-your-modules)).
+
+## Print settings
+
+| Setting | Value |
+|---|---|
+| Material | Floor wedge: **PETG** (tougher, and survives a hot car). Desktop case: PLA or PETG. |
+| Nozzle, layer height | 0.4 mm, 0.2 mm |
+| Walls | 3 perimeters (the 2.5 to 3 mm walls then print solid), 5 top and bottom layers |
+| Infill | 20 % |
+| Supports | **none** |
+| Adhesion | no brim needed: the shell prints on its face, the base on its underside |
+| Filament | desktop about 130 g, floor wedge about 210 g |
+
+<p align="center">
+  <img src="renders/stage_wedge-print.png" width="60%" alt="Print orientation: the shell lies on its display face">
+</p>
+
+The **shell prints face-down**: the display face lies on the bed and the
+open bottom points up, so the face comes out as smooth (or textured) as your
+build plate, and the port notches, which are open at the rim, need no
+bridges. The side walls stand vertical; the front and back walls lean by
+the face angle. Keep elephant-foot compensation on so the engraved lettering
+on the face stays crisp.
+
+## Hardware
+
+| Part | Desktop | Stage | Budget |
+|---|---:|---:|---:|
+| M3 heat-set insert for a 4.0 mm hole, up to 6 mm long (CNC Kitchen / Ruthex M3 x 5.7) | 3 | 3 | 3 |
+| M3 x 8 screw, button or socket head (6 to 10 mm long work) | 3 | 3 | 3 |
+| M2.5 x 8 screw, pan or button head, self-tapping or machine screw | 7 | 8 | 6 |
+| Adhesive rubber bumper, up to 13 mm diameter | 4 | 4 | 4 |
+| Double-sided foam tape, 20 x 15 mm (level shifter) | 1 | - | - |
+| 2 mm red transparent acrylic filter | - | 1 | 1 (optional) |
+| Hook-and-loop or Dual Lock, 25 x 60 mm (pedalboard) | - | 2 (optional) | 2 (optional) |
+
+Four of the M2.5 screws hold the Pi; the others hold the clamp tabs. To do
+without heat-set inserts, set `closure = "selftap"` in `lib/wedge.scad`,
+rebuild the STLs ([Customising](#customising)) and use M3 x 10
+thread-forming screws for plastic. The complete parts lists, electronics
+included, are in the [BOM](../bom/README.md).
+
+## Assembly
+
+<p align="center">
+  <img src="renders/desktop_lcd_case-exploded.png" width="49%" alt="Desktop case, exploded">
+  <img src="renders/stage_wedge-exploded.png" width="49%" alt="Floor wedge, exploded">
+</p>
+
+Wire and test everything on the bench first ([wiring guide](../wiring/README.md)):
+it is much easier to fix a connection before it is inside a case. Flash the
+microSD card and put it in the Pi before assembly; the card slot is inside
+the case, so changing the card means taking the base off.
+
+1. **Inserts.** Press the three M3 heat-set inserts into the corner posts
+   from the open bottom of the shell with a soldering iron (about 220 °C for
+   PLA, 240 °C for PETG). Keep them square and stop flush with the end of the
+   post.
+2. **Filter** (floor wedge). Peel the protective film off and lay the filter
+   into the pocket behind the window, from inside. Hold it with a few small
+   dots of clear silicone, epoxy or thin double-sided tape at its edges.
+   Do not use superglue: its fumes fog acrylic.
+3. **Display.** Lay the module into the face from inside, digits or screen
+   facing the window. The LCD's bezel drops into the ridge around the
+   window; a 7-segment module presses on the filter. Put the clamp tabs over
+   the module's edges and screw each one into its boss with an M2.5 x 8
+   screw. Tighten until the tab holds the module firmly, no further: the
+   tabs flex a little by design, and too much force bends the module.
+4. **Button.** Push the 16 mm button through its hole (desktop: right side
+   wall; floor wedge: top right of the face) and tighten its nut from inside.
+5. **Footswitch jack** (floor wedge). Solder R1 and C1 onto the jack first
+   ([wiring guide](../wiring/README.md#footswitch-jack-r1-and-c1)), then
+   fit it into the back wall with the nut outside. Tie the leads to the jack
+   frame with a small cable tie for strain relief.
+6. **Pi.** Fit the Active Cooler (Pi 5) or the heatsink (Pi 4). Hold the
+   base the way it sits in the case: the standoffs are at the back left.
+   Screw the Pi onto them with four M2.5 x 8 screws, USB and Ethernet facing
+   left, USB-C and HDMI facing the back. Desktop: stick the level shifter
+   inside the small ridge at the front right of the base with foam tape.
+7. **Wire up** the display, the button and the jack as in the wiring guide.
+   Leave enough slack in the jumpers to stand the shell next to the base
+   while you plug them in. For a stage unit, keep the jumper housings from
+   working loose: a dab of hot glue across each header row, or a strip of
+   Kapton tape, holds them and peels off later.
+8. **Close.** Lower the shell over the base so the ports line up with the
+   notches in the left and back walls, turn the case over, and drive the
+   three M3 x 8 screws through the base into the inserts.
+9. **Feet.** Stick the bumpers into the four round recesses. For a
+   pedalboard, put hook-and-loop or Dual Lock into the two long recesses of
+   the floor wedge base instead.
+
+<p align="center">
+  <img src="renders/desktop_lcd_case-cutaway.png" width="49%" alt="Desktop case, cut away">
+  <img src="renders/stage_wedge-cutaway.png" width="49%" alt="Floor wedge, cut away">
+</p>
+
+Power (USB-C) and HDMI come out of the back wall, the USB audio interface
+and Ethernet out of the left wall; on the floor wedge the footswitch jack is
+also at the back, so no cable leaves the front.
+
+<p align="center">
+  <img src="renders/desktop_lcd_case-rear.png" width="49%" alt="Desktop case from the back left">
+  <img src="renders/stage_wedge-rear.png" width="49%" alt="Floor wedge from the back left">
+</p>
+
+Airflow: air moves through the slots low in the front and right walls and
+in the base, and through the slots in the face right above the Pi and its
+cooler. Keep the face slots uncovered.
+
+## Check your modules
+
+Displays from different vendors differ by a few millimetres. The cases are
+drawn for these sizes (in [`lib/ghosts.scad`](lib/ghosts.scad)); measure
+yours with calipers:
+
+| Module | What to measure | Drawn for |
+|---|---|---|
+| 16x2 LCD | PCB | 80 x 36 x 1.6 mm |
+| | metal bezel (it must drop into the ridge, which is 0.4 mm larger all round) | 71.2 x 24.2 mm, 7.0 mm tall |
+| | backpack, I2C header pointing sideways | 41.6 x 19.1 mm, 11 mm tall |
+| Adafruit 1.2" 7-segment | outline, depth from the digit face to the back of the PCB | 120 x 50 mm, 13 mm |
+| TM1637 0.56" | PCB outline, depth from the digit face to the back of the PCB | 50.5 x 25 mm, 10 mm |
+| TM1637 0.36" | same | 42 x 24 mm, 9 mm |
+
+If yours differ, change the numbers in `lib/ghosts.scad` (`lcd_pcb`,
+`lcd_bezel`, `lcd_backpack`, or the `sevenseg_dims` entry), then run the
+checks and rebuild the STLs as described below. A module up to about
+0.5 mm thicker than drawn is fine as it is, because the clamp tabs flex; if
+it is thinner, put a strip of foam tape between each tab and the module.
+
+## Customising
+
+The parameters at the top of each `.scad` file change the case: size
+(`W`, `D`, `H`), face angle (`angle`), wall and face thickness, the
+display position (`lcd_x`, `lcd_s` / `disp_x`, `disp_s`), the button and
+jack positions and the vent slots. In `lib/wedge.scad`, `closure` selects
+heat-set inserts (`"insert"`) or M3 thread-forming screws (`"selftap"`).
+`stage_wedge.scad` picks the display with `display`.
+
+Open a file in OpenSCAD to see the assembly. The `part` variable selects
+what is shown or exported:
+
+| `part` | |
+|---|---|
+| `assembly` | the finished case (default) |
+| `cutaway` | shell cut through the display, everything inside shown |
+| `exploded` | assembly order |
+| `print_layout` | the printed parts in their print orientation |
+| `shell`, `base`, `clamps` | one printed part, in print orientation (what the STLs are) |
+| `filter` | 2D filter outline (floor wedge) |
+| `ghosts_pi4`, `ghosts_pi5`, `ghost_display`, `ghost_controls` | the keep-out models the checks use |
+
+After a change, check the design and rebuild the files:
+
+```bash
+python3 tools/check_cad.py      # fit checks (needs numpy, scipy, trimesh, manifold3d)
+python3 tools/build.py          # STLs, filter DXF/SVG, renders
 ```
 
-#### Adjust Ventilation
+`check_cad.py` exports every part with OpenSCAD and fails if a part is not a
+single watertight body, does not fit a 180 mm printer, or intersects the Pi
+(4 or 5), the display, the controls, their plugs and wiring, or another
+part. `build.py` needs OpenSCAD 2021.01 or newer; on a machine without a
+display it runs itself under `xvfb-run` for the renders.
 
-```openscad
-// More/larger vent holes
-vent_hole_dia = 4;  // Was 3
-vent_spacing = 4;   // Was 5 (closer together)
+## Layout
+
 ```
-
-#### Add Custom Text/Branding
-
-```openscad
-// Add your band name to lid
-translate([case_length/2, panel_thickness - 0.5, 10])
-    rotate([90, 0, 0])
-    linear_extrude(height=0.6)
-    text("MY BAND", size=5, halign="center");
+desktop_lcd_case.scad   desktop case
+stage_wedge.scad        floor wedge (all display variants)
+lib/common.scad         screw, insert and clearance sizes; shape helpers
+lib/wedge.scad          the shared shell / base / closure / clamp-tab design
+lib/ghosts.scad         keep-out models of the Pi, displays, button, jack
+stl/                    print-ready parts (generated)
+cut/                    filter outlines (generated)
+renders/                images (generated)
+tools/check_cad.py      fit and printability checks (run by CI)
+tools/build.py          regenerates stl/, cut/ and renders/
 ```
-
-#### Support Different Raspberry Pi Models
-
-```openscad
-// For Raspberry Pi 3A+ (smaller)
-pi_length = 65;
-pi_width = 56;
-// Adjust case dimensions accordingly
-```
-
-### Remix and Share
-
-These designs are open-source under MIT license. Feel free to:
-- Modify for your specific needs
-- Share your remixes
-- Use commercially
-- Print and sell assembled units
-
-If you create cool modifications, consider sharing them with the community!
-
-## Troubleshooting
-
-### Print Issues
-
-**Warping corners:**
-- Use brim or raft
-- Increase bed temperature
-- Ensure level bed
-- Try glue stick on bed
-
-**Supports hard to remove:**
-- Use tree supports
-- Adjust support density to 10-15%
-- Enable "support interface"
-- Print support at 5°C cooler
-
-**Weak layer adhesion:**
-- Increase printing temperature
-- Slow down print speed
-- Increase flow rate 2-3%
-- Check nozzle isn't clogged
-
-### Assembly Issues
-
-**Screws don't fit:**
-- Pilot holes may need drilling out
-- Use 2.5mm drill bit for M2.5
-- Print at 101% scale if consistent issue
-
-**Parts don't align:**
-- Check you printed correct version
-- Verify printer calibration
-- Small gaps OK, can file/sand
-- Lid should fit snug but not tight
-
-**LCD/LED doesn't fit window:**
-- Measure your specific module
-- Adjust window size in OpenSCAD
-- Re-export and re-print lid/panel only
-
-## Resources
-
-- [OpenSCAD Documentation](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual)
-- [Thingiverse Nashville Numbers](https://thingiverse.com/) (search for remixes)
-- [r/3Dprinting](https://reddit.com/r/3Dprinting) - Printing help
-- [Project GitHub](https://github.com/your-repo) - Report issues
-
-## Gallery
-
-Share your builds! Tag with #NashvilleNumbers on social media.
-
----
-
-**Happy printing! 🎵🎸🖨️**

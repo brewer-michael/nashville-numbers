@@ -1,495 +1,187 @@
 # User Guide
 
-How to use the Nashville Numbers chord detection system effectively for practice and performance.
+Nashville Numbers listens to the music, works out the key, and shows every
+chord as its Nashville number: **1 4 5 6m** instead of **G C D Em**. Play or
+jam along and you always know where you are in the key.
 
-## Table of Contents
+## Contents
 
-1. [Quick Start](#quick-start)
-2. [Understanding the Display](#understanding-the-display)
-3. [Best Practices](#best-practices)
-4. [Using in Practice](#using-in-practice)
-5. [Using on Stage](#using-on-stage)
-6. [Tips and Techniques](#tips-and-techniques)
-7. [Common Scenarios](#common-scenarios)
-8. [Troubleshooting](#troubleshooting)
+1. [Reading the display](#reading-the-display)
+2. [Controls](#controls)
+3. [How it decides the key](#how-it-decides-the-key)
+4. [Getting a good signal](#getting-a-good-signal)
+5. [Settings](#settings)
+6. [What it can and can't hear](#what-it-can-and-cant-hear)
+7. [Nashville Number System primer](#nashville-number-system-primer)
 
-## Quick Start
+## Reading the display
 
-### Starting the System
-
-**From terminal:**
-```bash
-cd ~/nashville-numbers
-python3 main.py
-```
-
-**If auto-start is enabled:**
-- System starts automatically on boot
-- Wait 30 seconds after powering on
-- Display will show "Listening..."
-
-### Basic Operation
-
-1. **Position your audio source**
-   - Microphone 1-2 feet from instrument/amp
-   - Or connect line-in from mixer/amp
-
-2. **Play a chord**
-   - Play cleanly and let ring
-   - Wait 1-2 seconds for detection
-
-3. **Watch the display**
-   - Display shows detected chord and Nashville number
-   - Key appears after detecting 2-3 chords
-
-4. **Continue playing**
-   - System tracks chord changes in real-time
-   - Key updates if progression changes
-
-### Stopping the System
-
-Press **Ctrl+C** in terminal or power off Raspberry Pi.
-
-## Understanding the Display
-
-### LCD Display (16x2)
+### 16x2 LCD (desktop build)
 
 ```
-Chord: 1     C
-Key: C Maj  95%
+┌────────────────┐
+│6m   Em        G│   number · chord · key (🔒 before the key when locked)
+│1 5 6m 4 1 5 6m │   the progression so far, newest on the right
+└────────────────┘
 ```
 
-**Line 1:**
-- `Chord:` Current chord detected
-- `1` Nashville number
-- `C` Actual chord name
+Before the key is known the top line shows the chord name and `key?`, the
+bottom line `finding key...`. With no sound it shows `waiting for sound`.
+A 20x4 LCD adds the full key name (`Key G major locked`) and the input level
+and tuning offset.
 
-**Line 2:**
-- `Key:` Current musical key
-- `C Maj` Key name and quality (Maj/Min)
-- `95%` Detection confidence (higher is better)
+### 7-segment LED (stage and budget builds)
 
-### LED Display (TM1637/MAX7219)
+The degree is always in the second digit so it doesn't jump around; the
+quality follows it:
 
-```
-┌──────────┐
-│    1     │  ← Nashville number only
-└──────────┘
-```
+| Display | Means | Nashville |
+|---|---|---|
+| ` 1  ` | major | 1 |
+| ` 6- ` | minor (Nashville "dash" notation) | 6m |
+| ` 7° ` | diminished | 7° |
+| ` 5⁷ ` (small raised 7) | dominant seventh | 57 |
+| ` 2-⁷` | minor seventh | 2m7 |
+| ` 4M⁷` | major seventh | 4maj7 |
+| `b7  ` | chord on the flat seven | b7 |
+| `#4° ` | sharp-four diminished | #4° |
+| ` A- ` (letters) | chord *name* (Am) - shown until the key is known | |
+| `----` | listening, no chord | |
+| colon lit | key is locked | |
 
-Shows only the Nashville number in large digits for stage visibility.
+Status messages: `HELO` starting, `noAu` no audio interface, `nEU` new song
+(key cleared), `LOC` / `FrEE` key locked / unlocked, `OFF` shutting down,
+`Err` error (details in the log).
 
-**Display states:**
-- `----` Listening, no chord detected
-- `1` Major chord (plain number)
-- `2m` Minor chord (number + 'm')
-- `7°` Diminished chord (number + '°')
+An 8-digit MAX7219 display shows the number and the chord name side by side:
+` 6-  E- `.
 
-### Nashville Number System Reference
+## Controls
 
-| Number | Major Key | Minor Key | Typical Quality |
-|--------|-----------|-----------|----------------|
-| 1      | I         | i         | Major/Minor    |
-| 2      | ii        | ii°       | Minor          |
-| 3      | iii       | III       | Minor/Major    |
-| 4      | IV        | iv        | Major/Minor    |
-| 5      | V         | v/V       | Major          |
-| 6      | vi        | VI        | Minor/Major    |
-| 7      | vii°      | VII       | Diminished     |
+| Action | Panel button | Footswitch |
+|---|---|---|
+| **New song** - forget the key and the progression | short press | short stomp |
+| **Lock / unlock the key** - keep the current key through a bridge or solo | hold 1.5 s | hold 1.5 s |
+| **Shut down** safely before unplugging | hold 6 s | - |
 
-**Additional symbols:**
-- `7` Dominant 7th
-- `M7` Major 7th
-- `m7` Minor 7th
-- `°7` Diminished 7th
+The footswitch jack takes any momentary footswitch or keyboard sustain pedal;
+normally-open and normally-closed pedals both work (the polarity is learned
+when the Pi starts, and again if you plug a pedal in later).
 
-## Best Practices
+Without a button: `sudo systemctl restart nashville-numbers` starts a new
+song.
 
-### Audio Input
+## How it decides the key
 
-**For best detection accuracy:**
+* It needs about **four chords** (usually 5-9 seconds) before it shows a key.
+  Until then the display shows chord names. If the evidence is clear it
+  commits after three.
+* It uses the **chord changes**, how long each chord lasts, which chord
+  sounds like home (the song's first chord, V→I and IV→I resolutions), and
+  the overall pitch content. A chord you hold for a long time doesn't
+  outweigh the rest of the progression.
+* Once the key is set it **stays put** through borrowed chords, secondary
+  dominants, blues sevenths and bVII rock changes. It switches only when
+  another key has clearly fitted the music better for several seconds: about
+  4 seconds when the song really modulates (the classic last-chorus key
+  change), 6 seconds otherwise.
+* **Lock** the key (hold the button) during a solo or a bridge you don't want
+  it to follow; **new song** (short press) when the next song starts.
+* Minor keys: by default a minor song is numbered from its relative major,
+  the most common Nashville practice (A minor charted in C: Am F C G = 6m 4 1
+  5). Set `key.numbering` to `minor_tonic` if you prefer 1m-based charts
+  (Am F C G = 1m b6 b3 b7).
 
-1. **Clean signal**
-   - Minimize background noise
-   - Single instrument is best
-   - Or well-balanced mix
+## Getting a good signal
 
-2. **Proper gain staging**
-   - Set input so peaks are -6dB to -12dB
-   - Use `python3 main.py --test-audio` to check levels
-   - Avoid clipping (distortion)
+Detection is only as good as what it hears. From best to worst:
 
-3. **Instrument considerations**
-   - Guitar: Play full chords, let ring
-   - Piano: Play clear voicings
-   - Bass: Works better with other instruments
-   - Vocals: Not suitable for chord detection
+1. **Line or DI feed** of one harmonic instrument - keys or guitar from a
+   mixer aux send, a DI's thru, a pedalboard output (use a buffered output or
+   splitter so the guitar tone isn't loaded).
+2. **Guitar/bass straight into a Hi-Z interface input** (Behringer UM2,
+   UMC22, UCG102).
+3. **A microphone** close to one amp or acoustic instrument.
+4. A room microphone hearing the whole band: works on clear, sustained chords,
+   gets confused by loud drums and busy bass lines.
 
-### Environmental Setup
+Use `nashville-numbers --test-audio` to set the gain: strummed chords should
+peak around −20 to −10 dBFS, silence should stay below −50 dBFS (the gate).
+The meter also shows the chord it hears and the tuning offset; the analyser
+follows instruments tuned up to about ±50 cents away from A440.
 
-**Practice room:**
-- Place system on desk/table
-- LCD display close to you
-- Microphone positioned toward sound source
-- Quiet environment
+## Settings
 
-**Stage:**
-- LED display on floor in line of sight
-- Bright red LEDs work best in low light
-- Microphone or line-in from mixer
-- Consider backup power supply
+Put only what you change in `~/.config/nashville-numbers/config.json`, e.g.
 
-## Using in Practice
-
-### Learning Progressions
-
-**Scenario**: Learning a new song's chord progression
-
-1. **Start the system**
-   ```bash
-   python3 main.py --verbose
-   ```
-
-2. **Play through the song**
-   - Play each chord clearly
-   - Hold for 2-3 seconds
-   - Watch Nashville numbers appear
-
-3. **Write down the progression**
-   - Note the sequence: `1 - 4 - 5 - 6m`
-   - Now you can transpose easily!
-
-4. **Practice in different keys**
-   - Play same Nashville numbers in new key
-   - System will detect and confirm
-
-### Ear Training
-
-**Scenario**: Improving chord recognition skills
-
-1. **Listen to recorded song**
-2. **Try to play along**
-3. **Check your work**
-   - System shows what you're actually playing
-   - Compare to what you think you hear
-   - Improve recognition over time
-
-### Improvisation Practice
-
-**Scenario**: Jamming with a group
-
-1. **Let system detect the key**
-   - Play a few chords of the progression
-   - System identifies key automatically
-   - Confirms you're all in the same key!
-
-2. **Follow the changes**
-   - Watch Nashville numbers
-   - Anticipate common progressions
-   - Experiment with variations
-
-## Using on Stage
-
-### Setup Considerations
-
-1. **Placement**
-   - LED display on stage floor
-   - In your line of sight
-   - Not in audience view (if desired)
-
-2. **Power**
-   - Use reliable power supply
-   - Consider backup battery
-   - Test before performance
-
-3. **Audio**
-   - Line-in from mixer is most reliable
-   - Or dedicated mic on your amp
-   - Avoid picking up other instruments
-
-### Performance Tips
-
-1. **Soundcheck**
-   - Test detection with full band
-   - Adjust input levels
-   - Verify display visibility
-
-2. **Key Changes**
-   - System adapts automatically
-   - Play new key clearly for 2-3 chords
-   - Display updates when confident
-
-3. **Complex Chords**
-   - System detects: maj, min, dim, aug, 7ths
-   - Extended chords (9th, 11th, 13th) show as base chord
-   - Use as harmonic guide, not absolute truth
-
-### Stage Etiquette
-
-- Position display for your view only
-- Don't rely 100% on system during performance
-- Use as a safety net, not a crutch
-- Practice with it before gigging
-
-## Tips and Techniques
-
-### Improving Detection Accuracy
-
-**If chords aren't detected:**
-1. Play louder or increase gain
-2. Let chords ring longer (2-3 seconds)
-3. Play cleaner (avoid string noise)
-4. Reduce background noise
-
-**If wrong chords detected:**
-1. Check tuning
-2. Play cleaner voicings
-3. Increase `min_chord_confidence` in config
-4. Enable `chord_smoothing`
-
-**If key detection is unstable:**
-1. Play standard progressions initially
-2. Increase `key_detection_history`
-3. Avoid chromatic chords at first
-4. Let system "lock in" to key before experimenting
-
-### Configuration Tweaks
-
-**For faster response (sacrifice accuracy):**
 ```json
-"detection": {
-    "min_chord_confidence": 0.2,
-    "chord_smoothing": false
-},
-"system": {
-    "update_interval": 0.1
-}
+{ "display": { "type": "ht16k33" }, "key": { "numbering": "minor_tonic" } }
 ```
 
-**For more stable/accurate (slower):**
-```json
-"detection": {
-    "min_chord_confidence": 0.4,
-    "chord_smoothing": true,
-    "key_detection_history": 10
-},
-"system": {
-    "update_interval": 0.3
-}
-```
+and restart the service. All settings with their defaults:
 
-### Working with Different Genres
+| Setting | Default | Meaning |
+|---|---|---|
+| `audio.device` | `null` | input device: `null` = system default, a number from `--list-devices`, or part of its name (`"USB"`) |
+| `audio.sample_rate` | `null` | `null` = the device's own rate (usually 48000) |
+| `audio.channels` / `audio.channel` | `null` | channels to open / which one to analyse (`null` = mix to mono) |
+| `audio.backend` | `"auto"` | `sounddevice`, `pyaudio` or `auto` |
+| `analysis.window_seconds` | `0.35` | analysis window (longer = better low-note resolution, slower response) |
+| `analysis.hop_seconds` | `0.1` | how often the display updates |
+| `analysis.gate_open_dbfs` / `gate_close_dbfs` | `-50` / `-56` | input level that starts / stops analysis |
+| `analysis.auto_tuning` | `true` | follow instruments tuned away from A440 |
+| `analysis.chord_vocabulary` | `"sevenths"` | `triads` (maj, min), `basic` (+ dim, 7), `sevenths` (+ maj7, m7), `full` (+ aug, sus2, sus4, m7b5) |
+| `analysis.chord_hold_seconds` | `0.5` | higher = steadier chords, slower changes |
+| `analysis.no_chord_score` | `0.62` | higher = more willing to show `--` for unclear sounds |
+| `key.numbering` | `"relative_major"` | `relative_major` (Am = 6m) or `minor_tonic` (Am = 1m) |
+| `key.min_events` | `4` | chords heard before the first key is shown |
+| `key.switch_seconds` | `6` | how long another key must win before switching |
+| `key.window_seconds` | `60` | how much recent music is considered |
+| `key.silence_reset_seconds` | `0` | if > 0, forget the key after this much silence (automatic "new song") |
+| `display.type` | `"console"` | `lcd`, `ht16k33`, `tm1637`, `max7219` or `console` |
+| `display.lcd` | 16x2 at `0x27` | `cols`, `rows`, `address`, `expander` (`PCF8574`, `MCP23008`), `port`, `charmap` (`A00`/`A02`) |
+| `display.ht16k33` | `0x70` | `address`, `bus`, `brightness` (0-15) |
+| `display.tm1637` | GPIO 23/24 | `clk_pin`, `dio_pin`, `brightness` (0-7) |
+| `display.max7219` | SPI 0.0 | `port`, `device`, `digits`, `brightness` (0-15), `reverse` (digit order) |
+| `controls.enabled` | `true` | use the button/footswitch (off with `--simulate`) |
+| `controls.button_pin` / `footswitch_pin` | `17` / `27` | BCM GPIO numbers; `null` disables |
+| `controls.hold_seconds` | `1.5` | hold time for lock/unlock |
+| `controls.shutdown_seconds` / `allow_shutdown` | `6` / `true` | long hold on the panel button shuts down |
+| `logging.level` | `"INFO"` | `DEBUG` logs every chord change |
 
-**Folk/Country/Pop:**
-- Standard progressions work best
-- Diatonic chords (in-key) detect easily
-- System excels here
+## What it can and can't hear
 
-**Blues:**
-- Dominant 7th chords detected
-- 12-bar progressions work well
-- May show key as major even for blues
+* **Chords**: major, minor, diminished and dominant/major/minor sevenths by
+  default; augmented, sus2/sus4 and half-diminished with the `full`
+  vocabulary. Ninths, elevenths and thirteenths show as the seventh or triad
+  underneath them.
+* **Power chords** (root and fifth only) show as major - there is no third to
+  tell them apart.
+* **Inversions** show the chord's root (C/E shows as 1, not 1/3).
+* **Single-note melodies** are not chords; it shows whatever the notes imply,
+  or `--`.
+* **Accuracy**: on the bundled benchmark (10 common progressions × 12 keys ×
+  guitar, piano and organ timbres, solo and with bass, drums and noise;
+  `python tools/benchmark.py`) it gets 99.9 % of Nashville numbers right and
+  the key right in every case, without changing key mid-song. Real
+  instruments in real rooms are harder than synthesised ones: treat it as a
+  very good assistant, not an oracle.
 
-**Jazz:**
-- Complex voicings may simplify to basic chord
-- Rapid changes challenging
-- Use as harmonic reference
+## Nashville Number System primer
 
-**Rock:**
-- Power chords may not detect (no 3rd)
-- Full barre chords work best
-- Distortion can affect accuracy
+Each chord is numbered by the scale degree of its root in the song's key, so
+a chart works in any key:
 
-## Common Scenarios
+| Key | 1 | 2m | 3m | 4 | 5 | 6m | 7° |
+|---|---|---|---|---|---|---|---|
+| C | C | Dm | Em | F | G | Am | B° |
+| G | G | Am | Bm | C | D | Em | F#° |
+| D | D | Em | F#m | G | A | Bm | C#° |
+| A | A | Bm | C#m | D | E | F#m | G#° |
+| E | E | F#m | G#m | A | B | C#m | D#° |
+| F | F | Gm | Am | Bb | C | Dm | E° |
 
-### Scenario 1: Playing in a Jam Session
-
-**Problem**: Different players in different keys
-
-**Solution**:
-1. One player starts
-2. System detects key
-3. Display shows: "Key: G Maj"
-4. Others join in G major
-5. Everyone in sync!
-
-### Scenario 2: Transposing a Song
-
-**Original**: Song in C (chords: C, Am, F, G)
-
-**Process**:
-1. Play in C, system shows: `1, 6m, 4, 5`
-2. Want to play in D instead
-3. Play same Nashville numbers in D
-4. New chords: D, Bm, G, A
-5. System confirms you're in D
-
-### Scenario 3: Learning Progressions by Ear
-
-**Listening to**: Unknown song
-
-**Process**:
-1. Try to play along on instrument
-2. Watch display for Nashville numbers
-3. Write down: `1 - 5 - 6m - 4`
-4. Recognize as "I-V-vi-IV" progression
-5. Play in any key you want
-
-### Scenario 4: Checking Band Members
-
-**Problem**: Bass player sounds off
-
-**Solution**:
-1. Point mic at bass amp
-2. Have bassist play their progression
-3. Display shows what they're actually playing
-4. Identify the discrepancy
-5. Fix and move on
-
-## Troubleshooting
-
-### Display Issues
-
-**No display:**
-- Check power to Raspberry Pi
-- Verify display connections
-- Run `sudo i2cdetect -y 1` for LCD
-- Try simulation mode to test software
-
-**Garbled display:**
-- Check I2C address (LCD)
-- Verify wiring
-- Adjust contrast pot (LCD)
-
-**Display frozen:**
-- Check if system is running
-- Restart service: `sudo systemctl restart nashville-numbers`
-
-### Detection Issues
-
-**No chords detected:**
-1. Run audio test: `python3 main.py --test-audio`
-2. Check if meter responds to sound
-3. Increase gain if levels too low
-4. Verify audio device in config
-
-**Wrong chords:**
-1. Check instrument tuning
-2. Play cleaner
-3. Reduce background noise
-4. Adjust confidence threshold
-
-**Erratic key detection:**
-1. Play more predictable progressions initially
-2. Increase key detection history
-3. Enable chord smoothing
-4. Let system stabilize (5-10 chords)
-
-### System Issues
-
-**High latency:**
-- Reduce chunk_size in config
-- Decrease update_interval
-- Close other programs
-- Use Raspberry Pi 4
-
-**System crashes:**
-- Check logs: `sudo journalctl -u nashville-numbers`
-- Verify all libraries installed
-- Check power supply adequate
-- Test in simulation mode
-
-**Auto-start not working:**
-- Check service status: `sudo systemctl status nashville-numbers`
-- View errors: `sudo journalctl -u nashville-numbers -e`
-- Verify config file path
-- Check file permissions
-
-## Advanced Usage
-
-### Verbose Mode
-
-See detailed detection information:
-```bash
-python3 main.py --verbose
-```
-
-Output example:
-```
-RMS: 0.0523, Chord: C, Confidence: 0.87
-RMS: 0.0612, Chord: F, Confidence: 0.82
-RMS: 0.0598, Chord: G, Confidence: 0.79
-```
-
-### Custom Configuration
-
-Create specific configs for different scenarios:
-
-**Practice (accurate):**
-```bash
-python3 main.py --config config.practice.json
-```
-
-**Stage (fast):**
-```bash
-python3 main.py --config config.stage.json
-```
-
-### Integration with Other Tools
-
-**Recording for analysis:**
-- System can run while you record
-- Review Nashville numbers in your DAW notes
-- Helps with music notation later
-
-**Teaching tool:**
-- Students play, display shows what they played
-- Immediate feedback
-- Learn Nashville system hands-on
-
-## Getting the Most Out of the System
-
-### Do's
-
-✓ Use for learning and practice
-✓ Verify with your ears
-✓ Experiment with settings
-✓ Use as a teaching aid
-✓ Practice in different keys
-✓ Build musical understanding
-
-### Don'ts
-
-✗ Rely completely without listening
-✗ Use as only method of learning
-✗ Ignore your musical intuition
-✗ Expect 100% accuracy on complex chords
-✗ Use with badly out-of-tune instruments
-✗ Expect it to work in very noisy environments
-
-## Additional Resources
-
-### Nashville Number System
-
-- [Wikipedia - Nashville Number System](https://en.wikipedia.org/wiki/Nashville_Number_System)
-- Books: "The Nashville Number System" by Chas Williams
-- Online tutorials and courses
-
-### Music Theory
-
-Understanding music theory helps interpret the system's output:
-- Scale degrees and chord functions
-- Diatonic vs. chromatic chords
-- Common progressions by genre
-- Key relationships
-
-### Community
-
-Share tips and get help:
-- GitHub issues for bugs/features
-- Music forums for technique discussion
-- Online communities of Nashville Number users
-
----
-
-**Remember**: This system is a tool to enhance your musicianship, not replace it. Use it to learn, practice, and grow as a musician!
+Chords outside the key get a flat or sharp: in G, F is **b7**, Bb is **b3**,
+Eb is **b6**. Minor is written `m` or `-`, diminished `°`, a dominant seventh
+`57` (on paper a small raised 7). Further reading:
+[Nashville Number System on Wikipedia](https://en.wikipedia.org/wiki/Nashville_Number_System).
